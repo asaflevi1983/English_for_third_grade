@@ -33,10 +33,18 @@ function Home({ onStartGame, progress }) {
       emoji: '💪',
       description: 'בחרו את התשובה הנכונה!',
       color: '#fa709a'
+    },
+    {
+      id: 'listen-write',
+      title: 'הקשיבו וכתבו',
+      subtitle: 'Listen and Write',
+      emoji: '🎧',
+      description: 'הקשיבו לאות וכתבו אותה!',
+      color: '#667eea'
     }
   ];
 
-  const allGamesCompleted = progress.completedGames.length === 4;
+  const allGamesCompleted = progress.completedGames.length === 5;
 
   return (
     <div className="home-container">
