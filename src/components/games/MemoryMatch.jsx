@@ -93,7 +93,10 @@ function MemoryMatch({ onComplete, onBack }) {
 
   const calculateScore = () => {
     // Score based on moves: fewer moves = higher score
-    const perfectMoves = WORD_PAIRS.length; // One move per pair in perfect scenario
+    // Perfect game = 8 moves (one per pair) = 8 stars
+    // Each 2 extra moves reduces score by 1 star
+    // Minimum score is 1 star, maximum is 8 stars
+    const perfectMoves = WORD_PAIRS.length;
     const maxScore = 8;
     const score = Math.max(1, Math.min(maxScore, Math.ceil(maxScore - (moves - perfectMoves) / 2)));
     return score;
