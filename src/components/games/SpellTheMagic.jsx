@@ -26,7 +26,7 @@ function SpellTheMagic({ onComplete, onBack }) {
       const shuffled = [...letters].sort(() => Math.random() - 0.5);
       setShuffledLetters(shuffled);
     }
-  }, [currentRound]);
+  }, [currentRound, currentWordData]);
 
   const handleLetterClick = (letter, index) => {
     setUserAnswer([...userAnswer, letter]);

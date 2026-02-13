@@ -16,7 +16,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
   const [isListening, setIsListening] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
-  const [hasSpokenWord, setHasSpokenWord] = useState(false);
 
   const currentWord = PRONUNCIATION_WORDS[currentRound];
 
@@ -68,7 +67,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
   const simulateSpeech = () => {
     // Fallback for when speech recognition isn't available
     setIsListening(true);
-    setHasSpokenWord(true);
     
     setTimeout(() => {
       setIsListening(false);
@@ -80,7 +78,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
         if (currentRound < PRONUNCIATION_WORDS.length - 1) {
           setCurrentRound(currentRound + 1);
           setFeedback('');
-          setHasSpokenWord(false);
         } else {
           setIsGameComplete(true);
         }
@@ -89,7 +86,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
   };
 
   const checkPronunciation = (transcript) => {
-    setHasSpokenWord(true);
     const targetWords = currentWord.word.toLowerCase().split(' ');
     const spokenWords = transcript.split(' ');
     
@@ -109,7 +105,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
         if (currentRound < PRONUNCIATION_WORDS.length - 1) {
           setCurrentRound(currentRound + 1);
           setFeedback('');
-          setHasSpokenWord(false);
         } else {
           setIsGameComplete(true);
         }
@@ -120,7 +115,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
       
       setTimeout(() => {
         setFeedback('');
-        setHasSpokenWord(false);
       }, 1500);
     }
   };
@@ -129,7 +123,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
     if (currentRound < PRONUNCIATION_WORDS.length - 1) {
       setCurrentRound(currentRound + 1);
       setFeedback('');
-      setHasSpokenWord(false);
     } else {
       setIsGameComplete(true);
     }

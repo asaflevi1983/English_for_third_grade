@@ -19,6 +19,7 @@ function WordCatcher({ onComplete, onBack }) {
   const [feedback, setFeedback] = useState('');
   const [shuffledWords, setShuffledWords] = useState([]);
   const [isGameComplete, setIsGameComplete] = useState(false);
+  const [options, setOptions] = useState([]);
 
   useEffect(() => {
     // Shuffle words for the game
@@ -26,11 +27,18 @@ function WordCatcher({ onComplete, onBack }) {
     setShuffledWords(shuffled);
   }, []);
 
+  useEffect(() => {
+    if (shuffledWords.length > 0) {
+      const currentWord = shuffledWords[currentRound];
+      const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
+      const newOptions = currentWord 
+        ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
+        : [];
+      setOptions(newOptions);
+    }
+  }, [currentRound, shuffledWords]);
+
   const currentWord = shuffledWords[currentRound];
-  const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
-  const options = currentWord 
-    ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
-    : [];
 
   const handleAnswer = (selectedWord) => {
     setSelectedAnswer(selectedWord);
