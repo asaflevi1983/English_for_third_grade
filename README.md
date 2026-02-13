@@ -75,6 +75,16 @@ npm run preview
 - הפריסה מתבצעת אוטומטית באמצעות GitHub Actions
 - הקוד נבנה עם Vite והמוצר הסופי מועלה ל-GitHub Pages
 
+### ⚙️ הגדרת GitHub Pages (פעם ראשונה)
+
+אם האתר לא עובד, יש לוודא ש-GitHub Pages מוגדר נכון:
+
+1. עברו ל-Settings → Pages בעמוד הפרויקט
+2. תחת "Source", בחרו **"GitHub Actions"**
+3. האתר יהיה זמין תוך דקות ספורות
+
+📖 **מדריך מפורט**: ראו [GITHUB_PAGES_SETUP.md](GITHUB_PAGES_SETUP.md) לפתרון בעיות
+
 ## 🛠️ טכנולוגיות
 
 - **React 19.2** - ספרית UI
