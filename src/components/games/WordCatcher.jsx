@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import './WordCatcher.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 import SuccessCartoon from '../SuccessCartoon';
@@ -113,33 +113,26 @@ const WORDS_DATA = [
 ];
 
 function WordCatcher({ onComplete, onBack }) {
+  // Pre-shuffle words and options once for consistency
+  const [gameData] = useState(() => {
+    const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
+    // Pre-generate all options for each round
+    const allOptions = shuffled.map((word, idx) => {
+      const otherWords = shuffled.filter((_, i) => i !== idx);
+      return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
+    });
+    return { shuffledWords: shuffled, optionsByRound: allOptions };
+  });
+  
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [shuffledWords, setShuffledWords] = useState([]);
   const [isGameComplete, setIsGameComplete] = useState(false);
-  const [options, setOptions] = useState([]);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
-  useEffect(() => {
-    // Shuffle words for the game
-    const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
-    setShuffledWords(shuffled);
-  }, []);
-
-  useEffect(() => {
-    if (shuffledWords.length > 0) {
-      const currentWord = shuffledWords[currentRound];
-      const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
-      const newOptions = currentWord 
-        ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
-        : [];
-      setOptions(newOptions);
-    }
-  }, [currentRound, shuffledWords]);
-
-  const currentWord = shuffledWords[currentRound];
+  const currentWord = gameData.shuffledWords[currentRound];
+  const options = gameData.optionsByRound[currentRound] || [];
 
   const speakWord = useCallback(() => {
     if (currentWord && 'speechSynthesis' in window) {
