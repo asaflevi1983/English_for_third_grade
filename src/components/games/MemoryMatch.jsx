@@ -14,15 +14,8 @@ const WORD_PAIRS = [
 ];
 
 function MemoryMatch({ onComplete, onBack }) {
-  const [cards, setCards] = useState([]);
-  const [flippedCards, setFlippedCards] = useState([]);
-  const [matchedPairs, setMatchedPairs] = useState([]);
-  const [moves, setMoves] = useState(0);
-  const [isChecking, setIsChecking] = useState(false);
-  const [isGameComplete, setIsGameComplete] = useState(false);
-
-  // Initialize cards with shuffled positions
-  useEffect(() => {
+  // Initialize cards with shuffled positions using useState initializer
+  const [cards] = useState(() => {
     const gameCards = [];
     WORD_PAIRS.forEach((pair, index) => {
       // English card
@@ -44,9 +37,14 @@ function MemoryMatch({ onComplete, onBack }) {
     });
     
     // Shuffle cards
-    const shuffled = gameCards.sort(() => Math.random() - 0.5);
-    setCards(shuffled);
-  }, []);
+    return gameCards.sort(() => Math.random() - 0.5);
+  });
+  
+  const [flippedCards, setFlippedCards] = useState([]);
+  const [matchedPairs, setMatchedPairs] = useState([]);
+  const [moves, setMoves] = useState(0);
+  const [isChecking, setIsChecking] = useState(false);
+  const [isGameComplete, setIsGameComplete] = useState(false);
 
   // Check for completion
   useEffect(() => {
