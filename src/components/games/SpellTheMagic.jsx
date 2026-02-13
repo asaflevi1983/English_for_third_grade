@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import './SpellTheMagic.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
@@ -31,7 +31,7 @@ function SpellTheMagic({ onComplete, onBack }) {
   const currentWordData = SPELLING_WORDS[currentRound];
   
   // Update shuffled letters when advancing rounds
-  const advanceRound = () => {
+  const advanceRound = useCallback(() => {
     setUserAnswer([]);
     setFeedback('');
     setCurrentRound(prev => {
@@ -44,7 +44,7 @@ function SpellTheMagic({ onComplete, onBack }) {
       setTimeout(() => setIsGameComplete(true), 0);
       return prev;
     });
-  };
+  }, [gameData.allShuffledLetters]);
 
   const handleLetterClick = (letter, index) => {
     setUserAnswer([...userAnswer, letter]);
