@@ -16,7 +16,11 @@ function SpellTheMagic({ onComplete, onBack }) {
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState([]);
-  const [shuffledLetters, setShuffledLetters] = useState([]);
+  const [shuffledLetters, setShuffledLetters] = useState(() => {
+    // Initialize with first word's shuffled letters
+    const letters = SPELLING_WORDS[0].word.split('');
+    return [...letters].sort(() => Math.random() - 0.5);
+  });
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
@@ -24,10 +28,13 @@ function SpellTheMagic({ onComplete, onBack }) {
   const currentWordData = SPELLING_WORDS[currentRound];
 
   useEffect(() => {
-    if (currentWordData) {
+    if (currentRound > 0 && currentWordData) {
       const letters = currentWordData.word.split('');
       const shuffled = [...letters].sort(() => Math.random() - 0.5);
-      setShuffledLetters(shuffled);
+      // Use setTimeout to avoid setState in effect
+      setTimeout(() => {
+        setShuffledLetters(shuffled);
+      }, 0);
     }
   }, [currentRound, currentWordData]);
 

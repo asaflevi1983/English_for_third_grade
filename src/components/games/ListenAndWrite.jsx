@@ -7,7 +7,10 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
 function ListenAndWrite({ onComplete, onBack }) {
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
-  const [currentLetter, setCurrentLetter] = useState('');
+  const [currentLetter, setCurrentLetter] = useState(() => {
+    // Generate initial random letter
+    return LETTERS[Math.floor(Math.random() * LETTERS.length)];
+  });
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
@@ -18,10 +21,13 @@ function ListenAndWrite({ onComplete, onBack }) {
 
   // Select a new random letter when round changes
   useEffect(() => {
-    if (currentRound < totalRounds) {
+    if (currentRound > 0 && currentRound < totalRounds) {
       const randomLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
-      setCurrentLetter(randomLetter);
-      setHasPlayed(false);
+      // Use setTimeout to avoid setState in effect
+      setTimeout(() => {
+        setCurrentLetter(randomLetter);
+        setHasPlayed(false);
+      }, 0);
     }
   }, [currentRound]);
 

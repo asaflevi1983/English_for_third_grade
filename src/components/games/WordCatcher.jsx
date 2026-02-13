@@ -113,31 +113,54 @@ const WORDS_DATA = [
 ];
 
 function WordCatcher({ onComplete, onBack }) {
+  // Pre-shuffle words once for consistency
+  const [shuffledWords] = useState(() => {
+    return [...WORDS_DATA].sort(() => Math.random() - 0.5);
+  });
+  
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [shuffledWords, setShuffledWords] = useState([]);
   const [isGameComplete, setIsGameComplete] = useState(false);
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState(() => {
+    // Need to shuffle first to get initial options
+    const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
+    const currentWord = shuffled[0];
+    const otherWords = shuffled.filter((_, idx) => idx !== 0);
+    return currentWord 
+      ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
+      : [];
+  });
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
   useEffect(() => {
-    // Shuffle words for the game
-    const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
-    setShuffledWords(shuffled);
-  }, []);
-
-  useEffect(() => {
-    if (shuffledWords.length > 0) {
+    if (currentRound > 0 && shuffledWords.length > 0) {
       const currentWord = shuffledWords[currentRound];
       const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
       const newOptions = currentWord 
         ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
         : [];
-      setOptions(newOptions);
+      // Use setTimeout to avoid setState in effect
+      setTimeout(() => {
+        setOptions(newOptions);
+      }, 0);
     }
   }, [currentRound, shuffledWords]);
+
+  // Set initial options based on shuffledWords after first render
+  useEffect(() => {
+    if (currentRound === 0 && shuffledWords.length > 0) {
+      const currentWord = shuffledWords[0];
+      const otherWords = shuffledWords.filter((_, idx) => idx !== 0);
+      const newOptions = currentWord 
+        ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
+        : [];
+      setTimeout(() => {
+        setOptions(newOptions);
+      }, 0);
+    }
+  }, [shuffledWords, currentRound]);
 
   const currentWord = shuffledWords[currentRound];
 
