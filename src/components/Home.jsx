@@ -41,10 +41,34 @@ function Home({ onStartGame, progress }) {
       emoji: '🎧',
       description: 'הקשיבו לאות וכתבו אותה!',
       color: '#667eea'
+    },
+    {
+      id: 'rhyme-time',
+      title: 'זמן חרוזים',
+      subtitle: 'Rhyme Time',
+      emoji: '🎵',
+      description: 'מצאו מילים שמתחרזות!',
+      color: '#764ba2'
+    },
+    {
+      id: 'memory-match',
+      title: 'משחק הזיכרון',
+      subtitle: 'Memory Match',
+      emoji: '🧠',
+      description: 'מצאו את הזוגות התואמים!',
+      color: '#f5576c'
+    },
+    {
+      id: 'count-stars',
+      title: 'ספרו את הכוכבים',
+      subtitle: 'Count the Stars',
+      emoji: '🔢',
+      description: 'ספרו כמה פריטים יש!',
+      color: '#00f2fe'
     }
   ];
 
-  const allGamesCompleted = progress.completedGames.length === 5;
+  const allGamesCompleted = progress.completedGames.length === 8;
 
   return (
     <div className="home-container">
