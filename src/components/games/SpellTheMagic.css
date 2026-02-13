@@ -1,0 +1,252 @@
+.spell-magic {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  padding: 20px;
+}
+
+.picture-display {
+  text-align: center;
+  margin: 30px 0;
+}
+
+.emoji-circle {
+  font-size: 8rem;
+  background: white;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.answer-area {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+}
+
+.answer-boxes {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.letter-box {
+  width: 70px;
+  height: 80px;
+  background: white;
+  border: 4px solid #764ba2;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.letter-box.empty {
+  border-style: dashed;
+  color: #ccc;
+}
+
+.letter-box.filled {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.letter-box.filled:hover {
+  transform: scale(0.95);
+}
+
+.letter-box.correct {
+  animation: success-bounce 0.5s ease-in-out;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  border-color: #43e97b;
+}
+
+.letter-box.wrong {
+  animation: shake 0.5s ease-in-out;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-color: #ff6b6b;
+}
+
+@keyframes success-bounce {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.letters-pool {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.letters-pool h3 {
+  color: white;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  direction: rtl;
+}
+
+.letters-grid {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.letter-button {
+  width: 70px;
+  height: 80px;
+  background: white;
+  border: 4px solid #f5576c;
+  border-radius: 15px;
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.letter-button:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  border-color: #764ba2;
+}
+
+.letter-button:active {
+  transform: scale(0.95);
+}
+
+.check-button {
+  display: block;
+  margin: 30px auto;
+  font-size: 1.5rem;
+  padding: 20px 50px;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.magic-scene {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+.wizard, .magic-target {
+  font-size: 5rem;
+}
+
+.wizard {
+  animation: bounce 2s ease-in-out infinite;
+}
+
+.magic-target {
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.completion-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.magic-blast {
+  background: white;
+  border-radius: 30px;
+  padding: 60px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.blast-animation {
+  font-size: 6rem;
+  animation: sparkle 1s ease-in-out infinite;
+}
+
+.magic-blast h1 {
+  font-size: 2.5rem;
+  color: #4facfe;
+  margin: 20px 0;
+  direction: rtl;
+}
+
+.magic-blast p {
+  font-size: 1.5rem;
+  color: #666;
+  margin-bottom: 30px;
+  direction: rtl;
+}
+
+.final-score h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+  direction: rtl;
+}
+
+.stars-earned {
+  font-size: 1.8rem;
+  color: #ffd700;
+  font-weight: bold;
+  margin-bottom: 30px;
+  direction: rtl;
+}
+
+@media (max-width: 768px) {
+  .emoji-circle {
+    width: 150px;
+    height: 150px;
+    font-size: 6rem;
+  }
+  
+  .letter-box, .letter-button {
+    width: 55px;
+    height: 65px;
+    font-size: 2rem;
+  }
+  
+  .answer-boxes {
+    gap: 8px;
+  }
+  
+  .letters-grid {
+    gap: 10px;
+  }
+  
+  .check-button {
+    font-size: 1.2rem;
+    padding: 15px 35px;
+  }
+  
+  .wizard, .magic-target {
+    font-size: 3rem;
+  }
+  
+  .magic-blast {
+    padding: 30px;
+  }
+  
+  .blast-animation {
+    font-size: 4rem;
+  }
+  
+  .magic-blast h1 {
+    font-size: 1.8rem;
+  }
+}

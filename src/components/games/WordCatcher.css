@@ -1,0 +1,240 @@
+.word-catcher {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 30px;
+  color: white;
+}
+
+.game-header h1 {
+  font-size: 2.5rem;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+}
+
+.instructions {
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+  direction: rtl;
+}
+
+.score-display {
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.3);
+  padding: 10px 20px;
+  border-radius: 20px;
+  display: inline-block;
+}
+
+.word-display-box {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0;
+  min-height: 150px;
+}
+
+.falling-word {
+  background: white;
+  padding: 30px 60px;
+  border-radius: 25px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  animation: bounce 2s ease-in-out infinite;
+  text-align: center;
+}
+
+.falling-word h2 {
+  font-size: 3rem;
+  color: #f5576c;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.hebrew-hint {
+  font-size: 1.2rem;
+  color: #666;
+  direction: rtl;
+}
+
+.falling-word.correct {
+  animation: success-pulse 0.5s ease-in-out;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.falling-word.wrong {
+  animation: shake 0.5s ease-in-out;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+}
+
+@keyframes success-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto 40px;
+}
+
+.option-card {
+  background: white;
+  border: 4px solid transparent;
+  border-radius: 20px;
+  padding: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.option-card:hover:not(:disabled) {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+  border-color: #f5576c;
+}
+
+.option-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.option-card.correct {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  border-color: #43e97b;
+  animation: success-pulse 0.5s ease-in-out;
+}
+
+.option-card.wrong {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-color: #ff6b6b;
+  animation: shake 0.5s ease-in-out;
+}
+
+.emoji-large {
+  font-size: 4rem;
+  margin-bottom: 15px;
+}
+
+.option-text {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+}
+
+.option-card.correct .option-text,
+.option-card.wrong .option-text {
+  color: white;
+}
+
+.battle-scene {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 40px;
+  padding: 20px;
+}
+
+.hero-attack, .demon-target {
+  font-size: 5rem;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+.completion-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.demon-defeated {
+  background: white;
+  border-radius: 30px;
+  padding: 60px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  max-width: 600px;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.demon-explosion {
+  font-size: 8rem;
+  animation: pulse 0.5s ease-in-out infinite;
+}
+
+.demon-defeated h1 {
+  font-size: 2.5rem;
+  color: #f5576c;
+  margin: 20px 0;
+  direction: rtl;
+}
+
+.demon-defeated p {
+  font-size: 1.5rem;
+  color: #666;
+  margin-bottom: 30px;
+  direction: rtl;
+}
+
+.final-score h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+  direction: rtl;
+}
+
+.stars-earned {
+  font-size: 1.8rem;
+  color: #ffd700;
+  font-weight: bold;
+  margin-bottom: 30px;
+  direction: rtl;
+}
+
+@media (max-width: 768px) {
+  .game-header h1 {
+    font-size: 1.8rem;
+  }
+  
+  .instructions {
+    font-size: 1.1rem;
+  }
+  
+  .falling-word {
+    padding: 20px 40px;
+  }
+  
+  .falling-word h2 {
+    font-size: 2rem;
+  }
+  
+  .options-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .emoji-large {
+    font-size: 3rem;
+  }
+  
+  .battle-scene {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .hero-attack, .demon-target {
+    font-size: 3rem;
+  }
+  
+  .demon-defeated {
+    padding: 30px;
+  }
+  
+  .demon-explosion {
+    font-size: 5rem;
+  }
+}
