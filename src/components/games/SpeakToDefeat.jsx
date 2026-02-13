@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import './SpeakToDefeat.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
+import SuccessCartoon from '../SuccessCartoon';
 
 const PRONUNCIATION_WORDS = [
   { word: 'hello', hebrew: 'שלום', phonetic: 'he-lo' },
@@ -17,6 +18,7 @@ function SpeakToDefeat({ onComplete, onBack }) {
   const [isListening, setIsListening] = useState(false);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
+  const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
   const currentWord = PRONUNCIATION_WORDS[currentRound];
 
@@ -74,11 +76,13 @@ function SpeakToDefeat({ onComplete, onBack }) {
       setFeedback('correct');
       setScore(score + 1);
       playSuccessSound();
+      setShowSuccessCartoon(true);
       
       setTimeout(() => {
         if (currentRound < PRONUNCIATION_WORDS.length - 1) {
           setCurrentRound(currentRound + 1);
           setFeedback('');
+          setShowSuccessCartoon(false);
         } else {
           setIsGameComplete(true);
         }
@@ -101,11 +105,13 @@ function SpeakToDefeat({ onComplete, onBack }) {
       setFeedback('correct');
       setScore(score + 1);
       playSuccessSound();
+      setShowSuccessCartoon(true);
       
       setTimeout(() => {
         if (currentRound < PRONUNCIATION_WORDS.length - 1) {
           setCurrentRound(currentRound + 1);
           setFeedback('');
+          setShowSuccessCartoon(false);
         } else {
           setIsGameComplete(true);
         }
@@ -222,6 +228,11 @@ function SpeakToDefeat({ onComplete, onBack }) {
           {feedback === 'correct' ? '😱' : '👾'}
         </div>
       </div>
+
+      <SuccessCartoon 
+        show={showSuccessCartoon} 
+        onComplete={() => setShowSuccessCartoon(false)}
+      />
     </div>
   );
 }

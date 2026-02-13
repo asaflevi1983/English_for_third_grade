@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import './WordCatcher.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
+import SuccessCartoon from '../SuccessCartoon';
 
 const WORDS_DATA = [
   { word: 'cat', emoji: '🐱', hebrew: 'חתול' },
@@ -119,6 +120,7 @@ function WordCatcher({ onComplete, onBack }) {
   const [shuffledWords, setShuffledWords] = useState([]);
   const [isGameComplete, setIsGameComplete] = useState(false);
   const [options, setOptions] = useState([]);
+  const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
   useEffect(() => {
     // Shuffle words for the game
@@ -164,12 +166,14 @@ function WordCatcher({ onComplete, onBack }) {
       setFeedback('correct');
       setScore(score + 1);
       playSuccessSound();
+      setShowSuccessCartoon(true);
       
       setTimeout(() => {
         if (currentRound < 5) {
           setCurrentRound(currentRound + 1);
           setSelectedAnswer(null);
           setFeedback('');
+          setShowSuccessCartoon(false);
         } else {
           setIsGameComplete(true);
         }
@@ -262,6 +266,11 @@ function WordCatcher({ onComplete, onBack }) {
           {feedback === 'correct' ? '😱' : '👾'}
         </div>
       </div>
+
+      <SuccessCartoon 
+        show={showSuccessCartoon} 
+        onComplete={() => setShowSuccessCartoon(false)}
+      />
     </div>
   );
 }

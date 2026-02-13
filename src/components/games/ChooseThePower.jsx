@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import './ChooseThePower.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
+import SuccessCartoon from '../SuccessCartoon';
 
 const QUIZ_QUESTIONS = [
   {
@@ -69,6 +70,7 @@ function ChooseThePower({ onComplete, onBack }) {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
+  const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
   const question = QUIZ_QUESTIONS[currentQuestion];
 
@@ -113,12 +115,14 @@ function ChooseThePower({ onComplete, onBack }) {
       setScore(score + 1);
       setPowerMeter(powerMeter + 1);
       playSuccessSound();
+      setShowSuccessCartoon(true);
 
       setTimeout(() => {
         if (currentQuestion < QUIZ_QUESTIONS.length - 1) {
           setCurrentQuestion(currentQuestion + 1);
           setSelectedAnswer(null);
           setFeedback('');
+          setShowSuccessCartoon(false);
         } else {
           setIsGameComplete(true);
         }
@@ -233,6 +237,11 @@ function ChooseThePower({ onComplete, onBack }) {
           {feedback === 'correct' ? '😵' : '👾'}
         </div>
       </div>
+
+      <SuccessCartoon 
+        show={showSuccessCartoon} 
+        onComplete={() => setShowSuccessCartoon(false)}
+      />
     </div>
   );
 }
