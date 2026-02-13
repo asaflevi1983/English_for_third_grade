@@ -54,6 +54,7 @@ function ListenAndWrite({ onComplete, onBack }) {
       setTimeout(() => {
         setUserInput('');
         setFeedback('');
+        // Reset hasPlayed when advancing rounds
         setHasPlayed(false);
         setCurrentRound(prev => {
           if (prev < totalRounds - 1) {

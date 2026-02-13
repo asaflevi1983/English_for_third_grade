@@ -23,11 +23,15 @@ function SpellTheMagic({ onComplete, onBack }) {
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState([]);
+  const [shuffledLetters, setShuffledLetters] = useState(() => {
+    // Shuffle the first word's letters
+    const letters = SPELLING_WORDS[0].word.split('');
+    return [...letters].sort(() => Math.random() - 0.5);
+  });
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
 
   const currentWordData = SPELLING_WORDS[currentRound];
-  const [shuffledLetters, setShuffledLetters] = useState(() => allShuffledLetters[0]);
   
   // Update shuffled letters when advancing rounds
   const advanceRound = () => {

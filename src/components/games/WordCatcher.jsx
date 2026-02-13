@@ -116,19 +116,17 @@ function WordCatcher({ onComplete, onBack }) {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [shuffledWords] = useState(() => {
+  const [shuffledWords, allOptions] = useState(() => {
     // Shuffle words for the game in initial state
-    return [...WORDS_DATA].sort(() => Math.random() - 0.5);
-  });
-  const [isGameComplete, setIsGameComplete] = useState(false);
-  const [allOptions] = useState(() => {
-    // Pre-generate options for all rounds to avoid state updates in effects
     const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, 5).map((word, idx) => {
+    // Pre-generate options for all rounds using the same shuffled array
+    const options = shuffled.slice(0, 5).map((word, idx) => {
       const otherWords = shuffled.filter((_, i) => i !== idx);
       return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
     });
+    return [shuffled, options];
   });
+  const [isGameComplete, setIsGameComplete] = useState(false);
 
   const currentWord = shuffledWords[currentRound];
   const options = allOptions[currentRound] || [];
