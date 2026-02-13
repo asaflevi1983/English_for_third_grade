@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './WordCatcher.css';
+import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
 const WORDS_DATA = [
   { word: 'cat', emoji: '🐱', hebrew: 'חתול' },
@@ -46,7 +47,7 @@ function WordCatcher({ onComplete, onBack }) {
     if (selectedWord.word === currentWord.word) {
       setFeedback('correct');
       setScore(score + 1);
-      playSound('correct');
+      playSuccessSound();
       
       setTimeout(() => {
         if (currentRound < 5) {
@@ -59,35 +60,12 @@ function WordCatcher({ onComplete, onBack }) {
       }, 1500);
     } else {
       setFeedback('wrong');
-      playSound('wrong');
+      playErrorSound();
       
       setTimeout(() => {
         setSelectedAnswer(null);
         setFeedback('');
       }, 1000);
-    }
-  };
-
-  const playSound = (type) => {
-    // Simple audio feedback using Web Audio API
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    if (type === 'correct') {
-      oscillator.frequency.value = 523.25; // C5
-      gainNode.gain.value = 0.3;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.2);
-    } else {
-      oscillator.frequency.value = 200;
-      oscillator.type = 'sawtooth';
-      gainNode.gain.value = 0.2;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.3);
     }
   };
 

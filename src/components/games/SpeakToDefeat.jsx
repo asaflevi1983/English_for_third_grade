@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './SpeakToDefeat.css';
+import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
 const PRONUNCIATION_WORDS = [
   { word: 'hello', hebrew: 'שלום', phonetic: 'he-lo' },
@@ -72,7 +73,7 @@ function SpeakToDefeat({ onComplete, onBack }) {
       setIsListening(false);
       setFeedback('correct');
       setScore(score + 1);
-      playSound('correct');
+      playSuccessSound();
       
       setTimeout(() => {
         if (currentRound < PRONUNCIATION_WORDS.length - 1) {
@@ -99,7 +100,7 @@ function SpeakToDefeat({ onComplete, onBack }) {
     if (isCorrect) {
       setFeedback('correct');
       setScore(score + 1);
-      playSound('correct');
+      playSuccessSound();
       
       setTimeout(() => {
         if (currentRound < PRONUNCIATION_WORDS.length - 1) {
@@ -111,7 +112,7 @@ function SpeakToDefeat({ onComplete, onBack }) {
       }, 1500);
     } else {
       setFeedback('tryagain');
-      playSound('wrong');
+      playErrorSound();
       
       setTimeout(() => {
         setFeedback('');
@@ -125,28 +126,6 @@ function SpeakToDefeat({ onComplete, onBack }) {
       setFeedback('');
     } else {
       setIsGameComplete(true);
-    }
-  };
-
-  const playSound = (type) => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    if (type === 'correct') {
-      oscillator.frequency.value = 783.99; // G5
-      gainNode.gain.value = 0.3;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.2);
-    } else {
-      oscillator.frequency.value = 150;
-      oscillator.type = 'sawtooth';
-      gainNode.gain.value = 0.2;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.3);
     }
   };
 
