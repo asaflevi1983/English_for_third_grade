@@ -1,0 +1,223 @@
+.success-cartoon-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.success-cartoon {
+  position: absolute;
+  bottom: 20%;
+  left: -150px;
+  animation: walkAcrossScreen 3s ease-in-out forwards;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+@keyframes walkAcrossScreen {
+  0% {
+    left: -150px;
+    transform: scale(1);
+  }
+  15% {
+    left: 10%;
+    transform: scale(1.1);
+  }
+  50% {
+    left: 50%;
+    transform: scale(1.2) translateY(-20px);
+  }
+  85% {
+    left: 90%;
+    transform: scale(1.1);
+  }
+  100% {
+    left: calc(100% + 150px);
+    transform: scale(1);
+  }
+}
+
+.cartoon-character {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: bounce 0.6s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+.cartoon-face {
+  font-size: 4rem;
+  animation: faceExpression 0.6s ease-in-out infinite;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes faceExpression {
+  0%, 100% {
+    transform: rotate(-5deg) scale(1);
+  }
+  50% {
+    transform: rotate(5deg) scale(1.05);
+  }
+}
+
+.cartoon-body {
+  position: relative;
+  margin-top: -20px;
+}
+
+.cartoon-arms {
+  display: flex;
+  gap: 40px;
+  font-size: 2rem;
+}
+
+.cartoon-arms .arm {
+  animation: wave 0.6s ease-in-out infinite;
+  display: inline-block;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.cartoon-arms .arm.left {
+  animation-delay: 0s;
+}
+
+.cartoon-arms .arm.right {
+  animation-delay: 0.3s;
+}
+
+@keyframes wave {
+  0%, 100% {
+    transform: rotate(-20deg);
+  }
+  50% {
+    transform: rotate(20deg);
+  }
+}
+
+.celebration-particles {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  font-size: 2rem;
+  animation: particleFloat 1.5s ease-out infinite;
+  opacity: 0;
+}
+
+.particle-0 {
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.particle-1 {
+  left: 50%;
+  animation-delay: 0.5s;
+}
+
+.particle-2 {
+  left: 80%;
+  animation-delay: 1s;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(0) scale(0.5);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100px) scale(1.5);
+    opacity: 0;
+  }
+}
+
+.success-message {
+  margin-top: 20px;
+  animation: messageAppear 0.8s ease-out forwards;
+}
+
+@keyframes messageAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.message-text {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(255, 215, 0, 0.5);
+  white-space: nowrap;
+  background: linear-gradient(135deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: rainbowText 2s ease-in-out infinite;
+}
+
+@keyframes rainbowText {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .cartoon-face {
+    font-size: 3rem;
+  }
+  
+  .cartoon-arms {
+    font-size: 1.5rem;
+    gap: 30px;
+  }
+  
+  .message-text {
+    font-size: 1.4rem;
+  }
+  
+  .particle {
+    font-size: 1.5rem;
+  }
+}

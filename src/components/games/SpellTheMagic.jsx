@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import './SpellTheMagic.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
+import SuccessCartoon from '../SuccessCartoon';
 
 const SPELLING_WORDS = [
   { word: 'CAT', emoji: '🐱', hebrew: 'חתול' },
@@ -18,6 +19,7 @@ function SpellTheMagic({ onComplete, onBack }) {
   const [shuffledLetters, setShuffledLetters] = useState([]);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
+  const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
   const currentWordData = SPELLING_WORDS[currentRound];
 
@@ -48,12 +50,14 @@ function SpellTheMagic({ onComplete, onBack }) {
       setFeedback('correct');
       setScore(score + 1);
       playSuccessSound();
+      setShowSuccessCartoon(true);
 
       setTimeout(() => {
         if (currentRound < SPELLING_WORDS.length - 1) {
           setCurrentRound(currentRound + 1);
           setUserAnswer([]);
           setFeedback('');
+          setShowSuccessCartoon(false);
         } else {
           setIsGameComplete(true);
         }
@@ -152,6 +156,11 @@ function SpellTheMagic({ onComplete, onBack }) {
           {feedback === 'correct' ? '💫' : '👾'}
         </div>
       </div>
+
+      <SuccessCartoon 
+        show={showSuccessCartoon} 
+        onComplete={() => setShowSuccessCartoon(false)}
+      />
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './ListenAndWrite.css';
+import SuccessCartoon from '../SuccessCartoon';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
@@ -11,6 +12,7 @@ function ListenAndWrite({ onComplete, onBack }) {
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
+  const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
   const totalRounds = 6;
 
@@ -49,12 +51,14 @@ function ListenAndWrite({ onComplete, onBack }) {
       setFeedback('correct');
       setScore(score + 1);
       playSound('correct');
+      setShowSuccessCartoon(true);
 
       setTimeout(() => {
         if (currentRound < totalRounds - 1) {
           setCurrentRound(currentRound + 1);
           setUserInput('');
           setFeedback('');
+          setShowSuccessCartoon(false);
         } else {
           setIsGameComplete(true);
         }
@@ -208,6 +212,11 @@ function ListenAndWrite({ onComplete, onBack }) {
           {feedback === 'correct' ? '😵' : '👾'}
         </div>
       </div>
+
+      <SuccessCartoon 
+        show={showSuccessCartoon} 
+        onComplete={() => setShowSuccessCartoon(false)}
+      />
     </div>
   );
 }
