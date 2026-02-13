@@ -1,35 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './ListenAndWrite.css';
 import SuccessCartoon from '../SuccessCartoon';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 function ListenAndWrite({ onComplete, onBack }) {
+  const totalRounds = 6;
+  
+  // Pre-generate all letters for the game
+  const [roundLetters] = useState(() => {
+    return Array.from({ length: totalRounds }, () => 
+      LETTERS[Math.floor(Math.random() * LETTERS.length)]
+    );
+  });
+  
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
-  const [currentLetter, setCurrentLetter] = useState(() => {
-    // Generate initial random letter
-    return LETTERS[Math.floor(Math.random() * LETTERS.length)];
-  });
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
-  const totalRounds = 6;
-
-  // Select a new random letter when round changes
-  useEffect(() => {
-    if (currentRound > 0 && currentRound < totalRounds) {
-      const randomLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
-      // Use setTimeout to avoid setState in effect
-      setTimeout(() => {
-        setCurrentLetter(randomLetter);
-        setHasPlayed(false);
-      }, 0);
-    }
-  }, [currentRound]);
+  const currentLetter = roundLetters[currentRound];
 
   const playLetter = () => {
     if ('speechSynthesis' in window) {
@@ -65,6 +58,7 @@ function ListenAndWrite({ onComplete, onBack }) {
           setUserInput('');
           setFeedback('');
           setShowSuccessCartoon(false);
+          setHasPlayed(false);
         } else {
           setIsGameComplete(true);
         }
@@ -91,6 +85,7 @@ function ListenAndWrite({ onComplete, onBack }) {
       setCurrentRound(currentRound + 1);
       setUserInput('');
       setFeedback('');
+      setHasPlayed(false);
     } else {
       setIsGameComplete(true);
     }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './SpellTheMagic.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 import SuccessCartoon from '../SuccessCartoon';
@@ -13,30 +13,23 @@ const SPELLING_WORDS = [
 ];
 
 function SpellTheMagic({ onComplete, onBack }) {
+  // Pre-generate all shuffled letters for each word
+  const [roundLetters] = useState(() => {
+    return SPELLING_WORDS.map(wordData => {
+      const letters = wordData.word.split('');
+      return [...letters].sort(() => Math.random() - 0.5);
+    });
+  });
+  
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState([]);
-  const [shuffledLetters, setShuffledLetters] = useState(() => {
-    // Initialize with first word's shuffled letters
-    const letters = SPELLING_WORDS[0].word.split('');
-    return [...letters].sort(() => Math.random() - 0.5);
-  });
+  const [shuffledLetters, setShuffledLetters] = useState(() => roundLetters[0]);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
   const currentWordData = SPELLING_WORDS[currentRound];
-
-  useEffect(() => {
-    if (currentRound > 0 && currentWordData) {
-      const letters = currentWordData.word.split('');
-      const shuffled = [...letters].sort(() => Math.random() - 0.5);
-      // Use setTimeout to avoid setState in effect
-      setTimeout(() => {
-        setShuffledLetters(shuffled);
-      }, 0);
-    }
-  }, [currentRound, currentWordData]);
 
   const handleLetterClick = (letter, index) => {
     setUserAnswer([...userAnswer, letter]);
@@ -61,7 +54,9 @@ function SpellTheMagic({ onComplete, onBack }) {
 
       setTimeout(() => {
         if (currentRound < SPELLING_WORDS.length - 1) {
-          setCurrentRound(currentRound + 1);
+          const nextRound = currentRound + 1;
+          setCurrentRound(nextRound);
+          setShuffledLetters(roundLetters[nextRound]);
           setUserAnswer([]);
           setFeedback('');
           setShowSuccessCartoon(false);
