@@ -19,6 +19,7 @@ function SuccessCartoon({ show, onComplete }) {
       // Hide after animation completes - cleanup external animation state
       const hideTimer = setTimeout(() => {
         setIsVisible(false);
+        // onComplete is optional, only call if provided
         if (onComplete) {
           onComplete();
         }
