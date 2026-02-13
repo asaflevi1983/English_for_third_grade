@@ -29,7 +29,9 @@ function SuccessCartoon({ show, onComplete }) {
         clearTimeout(hideTimer);
       };
     }
-  }, [show, onComplete]);
+    // Note: onComplete is not in dependency array to avoid re-triggering animation
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [show]);
 
   if (!isVisible) return null;
 
