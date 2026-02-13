@@ -116,7 +116,7 @@ function WordCatcher({ onComplete, onBack }) {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [shuffledWords, allOptions] = useState(() => {
+  const [gameData] = useState(() => {
     // Shuffle words for the game in initial state
     const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
     // Pre-generate options for all rounds using the same shuffled array
@@ -124,12 +124,12 @@ function WordCatcher({ onComplete, onBack }) {
       const otherWords = shuffled.filter((_, i) => i !== idx);
       return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
     });
-    return [shuffled, options];
+    return { shuffledWords: shuffled, allOptions: options };
   });
   const [isGameComplete, setIsGameComplete] = useState(false);
 
-  const currentWord = shuffledWords[currentRound];
-  const options = allOptions[currentRound] || [];
+  const currentWord = gameData.shuffledWords[currentRound];
+  const options = gameData.allOptions[currentRound] || [];
 
   const speakWord = useCallback(() => {
     if (currentWord && 'speechSynthesis' in window) {

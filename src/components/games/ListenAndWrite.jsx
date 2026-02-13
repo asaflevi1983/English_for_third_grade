@@ -54,10 +54,10 @@ function ListenAndWrite({ onComplete, onBack }) {
       setTimeout(() => {
         setUserInput('');
         setFeedback('');
-        // Reset hasPlayed when advancing rounds
-        setHasPlayed(false);
         setCurrentRound(prev => {
           if (prev < totalRounds - 1) {
+            // Reset hasPlayed when advancing rounds
+            setTimeout(() => setHasPlayed(false), 0);
             return prev + 1;
           }
           setTimeout(() => setIsGameComplete(true), 0);
@@ -84,9 +84,9 @@ function ListenAndWrite({ onComplete, onBack }) {
   const skipLetter = () => {
     setUserInput('');
     setFeedback('');
-    setHasPlayed(false);
     setCurrentRound(prev => {
       if (prev < totalRounds - 1) {
+        setTimeout(() => setHasPlayed(false), 0);
         return prev + 1;
       }
       setTimeout(() => setIsGameComplete(true), 0);

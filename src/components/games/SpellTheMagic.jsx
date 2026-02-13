@@ -13,21 +13,18 @@ const SPELLING_WORDS = [
 
 function SpellTheMagic({ onComplete, onBack }) {
   // Pre-generate shuffled letters for all words
-  const [allShuffledLetters] = useState(() => {
-    return SPELLING_WORDS.map(wordData => {
+  const [gameData] = useState(() => {
+    const allShuffledLetters = SPELLING_WORDS.map(wordData => {
       const letters = wordData.word.split('');
       return [...letters].sort(() => Math.random() - 0.5);
     });
+    return { allShuffledLetters, initialLetters: allShuffledLetters[0] };
   });
   
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState([]);
-  const [shuffledLetters, setShuffledLetters] = useState(() => {
-    // Shuffle the first word's letters
-    const letters = SPELLING_WORDS[0].word.split('');
-    return [...letters].sort(() => Math.random() - 0.5);
-  });
+  const [shuffledLetters, setShuffledLetters] = useState(gameData.initialLetters);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
 
@@ -41,7 +38,7 @@ function SpellTheMagic({ onComplete, onBack }) {
       const nextRound = prev + 1;
       if (nextRound < SPELLING_WORDS.length) {
         // Schedule state updates after this updater completes
-        setTimeout(() => setShuffledLetters(allShuffledLetters[nextRound]), 0);
+        setTimeout(() => setShuffledLetters(gameData.allShuffledLetters[nextRound]), 0);
         return nextRound;
       }
       setTimeout(() => setIsGameComplete(true), 0);
