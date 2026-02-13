@@ -3,11 +3,21 @@
  * Uses Web Audio API to generate musical tones
  */
 
+// Shared AudioContext instance to avoid resource leaks
+let audioContext = null;
+
+function getAudioContext() {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioContext;
+}
+
 /**
  * Plays a pleasant success sound - ascending musical notes
  */
 export function playSuccessSound() {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const audioContext = getAudioContext();
   
   // Play a pleasant ascending arpeggio: C5 -> E5 -> G5
   const notes = [523.25, 659.25, 783.99]; // C5, E5, G5
@@ -42,7 +52,7 @@ export function playSuccessSound() {
  * Plays a gentle error sound - descending tones
  */
 export function playErrorSound() {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const audioContext = getAudioContext();
   
   // Play two descending notes: D4 -> A3 (gentle, not harsh)
   const notes = [293.66, 220.00]; // D4, A3
@@ -77,7 +87,7 @@ export function playErrorSound() {
  * Plays a celebration sound - happy musical flourish
  */
 export function playCelebrationSound() {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const audioContext = getAudioContext();
   
   // Play an uplifting melody: C5 -> E5 -> G5 -> C6
   const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
