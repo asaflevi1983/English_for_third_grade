@@ -27,7 +27,8 @@ function SpellTheMagic({ onComplete, onBack }) {
       const shuffled = [...letters].sort(() => Math.random() - 0.5);
       setShuffledLetters(shuffled);
     }
-  }, [currentRound, currentWordData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRound]);
 
   const handleLetterClick = (letter, index) => {
     setUserAnswer([...userAnswer, letter]);
@@ -46,17 +47,20 @@ function SpellTheMagic({ onComplete, onBack }) {
 
     if (userWord === correctWord) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore(prev => prev + 1);
       playSuccessSound();
 
       setTimeout(() => {
-        if (currentRound < SPELLING_WORDS.length - 1) {
-          setCurrentRound(currentRound + 1);
-          setUserAnswer([]);
-          setFeedback('');
-        } else {
-          setIsGameComplete(true);
-        }
+        setCurrentRound(prev => {
+          if (prev < SPELLING_WORDS.length - 1) {
+            setUserAnswer([]);
+            setFeedback('');
+            return prev + 1;
+          } else {
+            setIsGameComplete(true);
+            return prev;
+          }
+        });
       }, 1500);
     } else {
       setFeedback('wrong');

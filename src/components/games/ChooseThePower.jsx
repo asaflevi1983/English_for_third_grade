@@ -110,18 +110,21 @@ function ChooseThePower({ onComplete, onBack }) {
 
     if (option.correct) {
       setFeedback('correct');
-      setScore(score + 1);
-      setPowerMeter(powerMeter + 1);
+      setScore(prev => prev + 1);
+      setPowerMeter(prev => prev + 1);
       playSuccessSound();
 
       setTimeout(() => {
-        if (currentQuestion < QUIZ_QUESTIONS.length - 1) {
-          setCurrentQuestion(currentQuestion + 1);
-          setSelectedAnswer(null);
-          setFeedback('');
-        } else {
-          setIsGameComplete(true);
-        }
+        setCurrentQuestion(prev => {
+          if (prev < QUIZ_QUESTIONS.length - 1) {
+            setSelectedAnswer(null);
+            setFeedback('');
+            return prev + 1;
+          } else {
+            setIsGameComplete(true);
+            return prev;
+          }
+        });
       }, 1500);
     } else {
       setFeedback('wrong');

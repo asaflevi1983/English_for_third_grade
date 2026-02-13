@@ -72,16 +72,19 @@ function SpeakToDefeat({ onComplete, onBack }) {
     setTimeout(() => {
       setIsListening(false);
       setFeedback('correct');
-      setScore(score + 1);
+      setScore(prev => prev + 1);
       playSuccessSound();
       
       setTimeout(() => {
-        if (currentRound < PRONUNCIATION_WORDS.length - 1) {
-          setCurrentRound(currentRound + 1);
-          setFeedback('');
-        } else {
-          setIsGameComplete(true);
-        }
+        setCurrentRound(prev => {
+          if (prev < PRONUNCIATION_WORDS.length - 1) {
+            setFeedback('');
+            return prev + 1;
+          } else {
+            setIsGameComplete(true);
+            return prev;
+          }
+        });
       }, 1500);
     }, 2000);
   };
@@ -99,16 +102,19 @@ function SpeakToDefeat({ onComplete, onBack }) {
 
     if (isCorrect) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore(prev => prev + 1);
       playSuccessSound();
       
       setTimeout(() => {
-        if (currentRound < PRONUNCIATION_WORDS.length - 1) {
-          setCurrentRound(currentRound + 1);
-          setFeedback('');
-        } else {
-          setIsGameComplete(true);
-        }
+        setCurrentRound(prev => {
+          if (prev < PRONUNCIATION_WORDS.length - 1) {
+            setFeedback('');
+            return prev + 1;
+          } else {
+            setIsGameComplete(true);
+            return prev;
+          }
+        });
       }, 1500);
     } else {
       setFeedback('tryagain');

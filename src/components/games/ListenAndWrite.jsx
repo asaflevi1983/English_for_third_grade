@@ -1,27 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './ListenAndWrite.css';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
 function ListenAndWrite({ onComplete, onBack }) {
+  const totalRounds = 6;
+  
+  // Pre-generate random letters for all rounds
+  const [gameLetters] = useState(() => {
+    const letters = [];
+    for (let i = 0; i < totalRounds; i++) {
+      letters.push(LETTERS[Math.floor(Math.random() * LETTERS.length)]);
+    }
+    return letters;
+  });
+  
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
-  const [currentLetter, setCurrentLetter] = useState('');
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
 
-  const totalRounds = 6;
-
-  // Select a new random letter when round changes
-  useEffect(() => {
-    if (currentRound < totalRounds) {
-      const randomLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
-      setCurrentLetter(randomLetter);
-      setHasPlayed(false);
-    }
-  }, [currentRound]);
+  const currentLetter = gameLetters[currentRound];
 
   const playLetter = () => {
     if ('speechSynthesis' in window) {
@@ -47,17 +48,21 @@ function ListenAndWrite({ onComplete, onBack }) {
 
     if (userInput === currentLetter) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore(prev => prev + 1);
       playSound('correct');
 
       setTimeout(() => {
-        if (currentRound < totalRounds - 1) {
-          setCurrentRound(currentRound + 1);
-          setUserInput('');
-          setFeedback('');
-        } else {
-          setIsGameComplete(true);
-        }
+        setCurrentRound(prev => {
+          if (prev < totalRounds - 1) {
+            setUserInput('');
+            setFeedback('');
+            setHasPlayed(false);
+            return prev + 1;
+          } else {
+            setIsGameComplete(true);
+            return prev;
+          }
+        });
       }, 1500);
     } else {
       setFeedback('wrong');
@@ -77,13 +82,17 @@ function ListenAndWrite({ onComplete, onBack }) {
   };
 
   const skipLetter = () => {
-    if (currentRound < totalRounds - 1) {
-      setCurrentRound(currentRound + 1);
-      setUserInput('');
-      setFeedback('');
-    } else {
-      setIsGameComplete(true);
-    }
+    setCurrentRound(prev => {
+      if (prev < totalRounds - 1) {
+        setUserInput('');
+        setFeedback('');
+        setHasPlayed(false);
+        return prev + 1;
+      } else {
+        setIsGameComplete(true);
+        return prev;
+      }
+    });
   };
 
   const playSound = (type) => {

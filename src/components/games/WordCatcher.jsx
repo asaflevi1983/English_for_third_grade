@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import './WordCatcher.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
@@ -116,28 +116,22 @@ function WordCatcher({ onComplete, onBack }) {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [shuffledWords, setShuffledWords] = useState([]);
+  const [shuffledWords] = useState(() => {
+    // Shuffle words for the game in initial state
+    return [...WORDS_DATA].sort(() => Math.random() - 0.5);
+  });
   const [isGameComplete, setIsGameComplete] = useState(false);
-  const [options, setOptions] = useState([]);
-
-  useEffect(() => {
-    // Shuffle words for the game
+  const [allOptions] = useState(() => {
+    // Pre-generate options for all rounds to avoid state updates in effects
     const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
-    setShuffledWords(shuffled);
-  }, []);
-
-  useEffect(() => {
-    if (shuffledWords.length > 0) {
-      const currentWord = shuffledWords[currentRound];
-      const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
-      const newOptions = currentWord 
-        ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
-        : [];
-      setOptions(newOptions);
-    }
-  }, [currentRound, shuffledWords]);
+    return shuffled.slice(0, 5).map((word, idx) => {
+      const otherWords = shuffled.filter((_, i) => i !== idx);
+      return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
+    });
+  });
 
   const currentWord = shuffledWords[currentRound];
+  const options = allOptions[currentRound] || [];
 
   const speakWord = useCallback(() => {
     if (currentWord && 'speechSynthesis' in window) {
@@ -162,17 +156,20 @@ function WordCatcher({ onComplete, onBack }) {
     
     if (selectedWord.word === currentWord.word) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore(prev => prev + 1);
       playSuccessSound();
       
       setTimeout(() => {
-        if (currentRound < 5) {
-          setCurrentRound(currentRound + 1);
-          setSelectedAnswer(null);
-          setFeedback('');
-        } else {
-          setIsGameComplete(true);
-        }
+        setCurrentRound(prev => {
+          if (prev < 5) {
+            setSelectedAnswer(null);
+            setFeedback('');
+            return prev + 1;
+          } else {
+            setIsGameComplete(true);
+            return prev;
+          }
+        });
       }, 1500);
     } else {
       setFeedback('wrong');
