@@ -126,6 +126,19 @@ function WordCatcher({ onComplete, onBack }) {
     setShuffledWords(shuffled);
   }, []);
 
+  useEffect(() => {
+    if (shuffledWords.length > 0) {
+      const currentWord = shuffledWords[currentRound];
+      const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
+      const newOptions = currentWord 
+        ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
+        : [];
+      setOptions(newOptions);
+    }
+  }, [currentRound, shuffledWords]);
+
+  const currentWord = shuffledWords[currentRound];
+
   const speakWord = useCallback(() => {
     if (currentWord && 'speechSynthesis' in window) {
       try {
@@ -144,19 +157,6 @@ function WordCatcher({ onComplete, onBack }) {
       }
     }
   }, [currentWord]);
-
-  useEffect(() => {
-    if (shuffledWords.length > 0) {
-      const currentWord = shuffledWords[currentRound];
-      const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
-      const newOptions = currentWord 
-        ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
-        : [];
-      setOptions(newOptions);
-    }
-  }, [currentRound, shuffledWords]);
-
-  const currentWord = shuffledWords[currentRound];
 
   const handleAnswer = (selectedWord) => {
     setSelectedAnswer(selectedWord);
