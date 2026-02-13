@@ -5,6 +5,7 @@ import WordCatcher from './components/games/WordCatcher';
 import SpellTheMagic from './components/games/SpellTheMagic';
 import SpeakToDefeat from './components/games/SpeakToDefeat';
 import ChooseThePower from './components/games/ChooseThePower';
+import ListenAndWrite from './components/games/ListenAndWrite';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -81,6 +82,13 @@ function App() {
           addStars(score);
           addBadge('בוחר הכוח');
           completeGame('choose-power', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'listen-write':
+        return <ListenAndWrite onComplete={(score) => {
+          addStars(score);
+          addBadge('מאזין אותיות');
+          completeGame('listen-write', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:
