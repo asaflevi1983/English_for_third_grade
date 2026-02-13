@@ -165,10 +165,9 @@ function WordCatcher({ onComplete, onBack }) {
         setCurrentRound(prev => {
           if (prev < 5) {
             return prev + 1;
-          } else {
-            setIsGameComplete(true);
-            return prev;
           }
+          setTimeout(() => setIsGameComplete(true), 0);
+          return prev;
         });
       }, 1500);
     } else {

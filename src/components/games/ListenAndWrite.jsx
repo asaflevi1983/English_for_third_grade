@@ -58,10 +58,9 @@ function ListenAndWrite({ onComplete, onBack }) {
         setCurrentRound(prev => {
           if (prev < totalRounds - 1) {
             return prev + 1;
-          } else {
-            setIsGameComplete(true);
-            return prev;
           }
+          setTimeout(() => setIsGameComplete(true), 0);
+          return prev;
         });
       }, 1500);
     } else {
@@ -88,10 +87,9 @@ function ListenAndWrite({ onComplete, onBack }) {
     setCurrentRound(prev => {
       if (prev < totalRounds - 1) {
         return prev + 1;
-      } else {
-        setIsGameComplete(true);
-        return prev;
       }
+      setTimeout(() => setIsGameComplete(true), 0);
+      return prev;
     });
   };
 

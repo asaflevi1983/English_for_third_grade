@@ -120,10 +120,9 @@ function ChooseThePower({ onComplete, onBack }) {
         setCurrentQuestion(prev => {
           if (prev < QUIZ_QUESTIONS.length - 1) {
             return prev + 1;
-          } else {
-            setIsGameComplete(true);
-            return prev;
           }
+          setTimeout(() => setIsGameComplete(true), 0);
+          return prev;
         });
       }, 1500);
     } else {

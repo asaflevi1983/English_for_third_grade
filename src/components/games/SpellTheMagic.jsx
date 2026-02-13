@@ -36,12 +36,12 @@ function SpellTheMagic({ onComplete, onBack }) {
     setCurrentRound(prev => {
       const nextRound = prev + 1;
       if (nextRound < SPELLING_WORDS.length) {
-        setShuffledLetters(allShuffledLetters[nextRound]);
+        // Schedule state updates after this updater completes
+        setTimeout(() => setShuffledLetters(allShuffledLetters[nextRound]), 0);
         return nextRound;
-      } else {
-        setIsGameComplete(true);
-        return prev;
       }
+      setTimeout(() => setIsGameComplete(true), 0);
+      return prev;
     });
   };
 

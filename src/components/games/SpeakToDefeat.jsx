@@ -80,10 +80,9 @@ function SpeakToDefeat({ onComplete, onBack }) {
         setCurrentRound(prev => {
           if (prev < PRONUNCIATION_WORDS.length - 1) {
             return prev + 1;
-          } else {
-            setIsGameComplete(true);
-            return prev;
           }
+          setTimeout(() => setIsGameComplete(true), 0);
+          return prev;
         });
       }, 1500);
     }, 2000);
@@ -110,10 +109,9 @@ function SpeakToDefeat({ onComplete, onBack }) {
         setCurrentRound(prev => {
           if (prev < PRONUNCIATION_WORDS.length - 1) {
             return prev + 1;
-          } else {
-            setIsGameComplete(true);
-            return prev;
           }
+          setTimeout(() => setIsGameComplete(true), 0);
+          return prev;
         });
       }, 1500);
     } else {
