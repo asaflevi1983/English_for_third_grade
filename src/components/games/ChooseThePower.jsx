@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './ChooseThePower.css';
+import { playSound } from '../../utils/soundEffects';
 
 const QUIZ_QUESTIONS = [
   {
@@ -97,27 +98,7 @@ function ChooseThePower({ onComplete, onBack }) {
     }
   };
 
-  const playSound = (type) => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    if (type === 'correct') {
-      oscillator.frequency.value = 880; // A5
-      gainNode.gain.value = 0.3;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.2);
-    } else {
-      oscillator.frequency.value = 130;
-      oscillator.type = 'sawtooth';
-      gainNode.gain.value = 0.2;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.3);
-    }
-  };
+
 
   if (isGameComplete) {
     const finalScore = Math.max(1, score);
