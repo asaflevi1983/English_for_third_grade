@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './ChooseThePower.css';
 
 const QUIZ_QUESTIONS = [
@@ -68,6 +68,26 @@ function ChooseThePower({ onComplete, onBack }) {
 
   const question = QUIZ_QUESTIONS[currentQuestion];
 
+  const speakWord = useCallback(() => {
+    if ('speechSynthesis' in window) {
+      // Cancel any ongoing speech
+      window.speechSynthesis.cancel();
+      
+      const utterance = new SpeechSynthesisUtterance(question.question);
+      utterance.lang = 'en-US';
+      utterance.rate = 0.8;
+      window.speechSynthesis.speak(utterance);
+    }
+  }, [question.question]);
+
+  // Auto-speak the question when it changes
+  useEffect(() => {
+    if (!isGameComplete) {
+      const timer = setTimeout(() => speakWord(), 300);
+      return () => clearTimeout(timer);
+    }
+  }, [currentQuestion, isGameComplete, speakWord]);
+
   const handleAnswer = (option, index) => {
     setSelectedAnswer(index);
 
@@ -82,6 +102,8 @@ function ChooseThePower({ onComplete, onBack }) {
           setCurrentQuestion(currentQuestion + 1);
           setSelectedAnswer(null);
           setFeedback('');
+          // Auto-speak the new word after transition
+          setTimeout(() => speakWord(), 500);
         } else {
           setIsGameComplete(true);
         }
@@ -170,6 +192,9 @@ function ChooseThePower({ onComplete, onBack }) {
       <div className="question-card">
         <h2 className="question-english">{question.question}</h2>
         <p className="question-hebrew">{question.questionHebrew}</p>
+        <button className="speak-button" onClick={speakWord} title="Listen to the question">
+          🔊 Speak Word
+        </button>
       </div>
 
       <div className="answers-grid">
@@ -187,7 +212,6 @@ function ChooseThePower({ onComplete, onBack }) {
             disabled={selectedAnswer !== null}
           >
             <div className="option-emoji">{option.emoji}</div>
-            <div className="option-label">{option.text}</div>
           </button>
         ))}
       </div>
