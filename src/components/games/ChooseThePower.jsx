@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './ChooseThePower.css';
+import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
 const QUIZ_QUESTIONS = [
   {
@@ -75,7 +76,7 @@ function ChooseThePower({ onComplete, onBack }) {
       setFeedback('correct');
       setScore(score + 1);
       setPowerMeter(powerMeter + 1);
-      playSound('correct');
+      playSuccessSound();
 
       setTimeout(() => {
         if (currentQuestion < QUIZ_QUESTIONS.length - 1) {
@@ -88,34 +89,12 @@ function ChooseThePower({ onComplete, onBack }) {
       }, 1500);
     } else {
       setFeedback('wrong');
-      playSound('wrong');
+      playErrorSound();
 
       setTimeout(() => {
         setSelectedAnswer(null);
         setFeedback('');
       }, 1000);
-    }
-  };
-
-  const playSound = (type) => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    if (type === 'correct') {
-      oscillator.frequency.value = 880; // A5
-      gainNode.gain.value = 0.3;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.2);
-    } else {
-      oscillator.frequency.value = 130;
-      oscillator.type = 'sawtooth';
-      gainNode.gain.value = 0.2;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.3);
     }
   };
 

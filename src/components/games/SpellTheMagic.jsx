@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import './SpellTheMagic.css';
+import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
 const SPELLING_WORDS = [
   { word: 'CAT', emoji: '🐱', hebrew: 'חתול' },
@@ -46,7 +47,7 @@ function SpellTheMagic({ onComplete, onBack }) {
     if (userWord === correctWord) {
       setFeedback('correct');
       setScore(score + 1);
-      playSound('correct');
+      playSuccessSound();
 
       setTimeout(() => {
         if (currentRound < SPELLING_WORDS.length - 1) {
@@ -59,33 +60,11 @@ function SpellTheMagic({ onComplete, onBack }) {
       }, 1500);
     } else {
       setFeedback('wrong');
-      playSound('wrong');
+      playErrorSound();
       
       setTimeout(() => {
         setFeedback('');
       }, 1000);
-    }
-  };
-
-  const playSound = (type) => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-    
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-    
-    if (type === 'correct') {
-      oscillator.frequency.value = 659.25; // E5
-      gainNode.gain.value = 0.3;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.2);
-    } else {
-      oscillator.frequency.value = 180;
-      oscillator.type = 'sawtooth';
-      gainNode.gain.value = 0.2;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.3);
     }
   };
 
