@@ -6,6 +6,9 @@ import SpellTheMagic from './components/games/SpellTheMagic';
 import SpeakToDefeat from './components/games/SpeakToDefeat';
 import ChooseThePower from './components/games/ChooseThePower';
 import ListenAndWrite from './components/games/ListenAndWrite';
+import RhymeTime from './components/games/RhymeTime';
+import MemoryMatch from './components/games/MemoryMatch';
+import CountTheStars from './components/games/CountTheStars';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -89,6 +92,27 @@ function App() {
           addStars(score);
           addBadge('מאזין אותיות');
           completeGame('listen-write', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'rhyme-time':
+        return <RhymeTime onComplete={(score) => {
+          addStars(score);
+          addBadge('מלך החרוזים');
+          completeGame('rhyme-time', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'memory-match':
+        return <MemoryMatch onComplete={(score) => {
+          addStars(score);
+          addBadge('אלוף הזיכרון');
+          completeGame('memory-match', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'count-stars':
+        return <CountTheStars onComplete={(score) => {
+          addStars(score);
+          addBadge('סופר המספרים');
+          completeGame('count-stars', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:
