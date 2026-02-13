@@ -58,6 +58,9 @@ const QUIZ_QUESTIONS = [
   }
 ];
 
+// Delay before auto-speaking to prevent conflicts during UI rendering
+const SPEECH_DELAY_MS = 300;
+
 function ChooseThePower({ onComplete, onBack }) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
@@ -70,21 +73,34 @@ function ChooseThePower({ onComplete, onBack }) {
 
   const speakWord = useCallback(() => {
     if ('speechSynthesis' in window) {
-      // Cancel any ongoing speech
-      window.speechSynthesis.cancel();
-      
-      const utterance = new SpeechSynthesisUtterance(question.question);
-      utterance.lang = 'en-US';
-      utterance.rate = 0.8;
-      window.speechSynthesis.speak(utterance);
+      try {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(question.question);
+        utterance.lang = 'en-US';
+        utterance.rate = 0.8;
+        utterance.onerror = (event) => {
+          console.error('Speech synthesis error:', event);
+        };
+        window.speechSynthesis.speak(utterance);
+      } catch (error) {
+        console.error('Error in speech synthesis:', error);
+      }
     }
   }, [question.question]);
 
   // Auto-speak the question when it changes
   useEffect(() => {
     if (!isGameComplete) {
-      const timer = setTimeout(() => speakWord(), 300);
-      return () => clearTimeout(timer);
+      const timer = setTimeout(() => speakWord(), SPEECH_DELAY_MS);
+      return () => {
+        clearTimeout(timer);
+        // Cancel any ongoing speech when question changes
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+        }
+      };
     }
   }, [currentQuestion, isGameComplete, speakWord]);
 
@@ -102,8 +118,6 @@ function ChooseThePower({ onComplete, onBack }) {
           setCurrentQuestion(currentQuestion + 1);
           setSelectedAnswer(null);
           setFeedback('');
-          // Auto-speak the new word after transition
-          setTimeout(() => speakWord(), 500);
         } else {
           setIsGameComplete(true);
         }
@@ -192,9 +206,21 @@ function ChooseThePower({ onComplete, onBack }) {
       <div className="question-card">
         <h2 className="question-english">{question.question}</h2>
         <p className="question-hebrew">{question.questionHebrew}</p>
-        <button className="speak-button" onClick={speakWord} title="Listen to the question">
-          🔊 Speak Word
-        </button>
+        {'speechSynthesis' in window ? (
+          <button 
+            className="speak-button" 
+            onClick={speakWord} 
+            type="button"
+            aria-label="Listen to the question"
+            title="Listen to the question"
+          >
+            🔊 Speak Word
+          </button>
+        ) : (
+          <p className="speech-unavailable" style={{ color: '#666', fontSize: '0.9rem', marginTop: '10px' }}>
+            (Audio not available in this browser)
+          </p>
+        )}
       </div>
 
       <div className="answers-grid">
