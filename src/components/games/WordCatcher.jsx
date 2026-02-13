@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import './WordCatcher.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
@@ -139,6 +139,24 @@ function WordCatcher({ onComplete, onBack }) {
 
   const currentWord = shuffledWords[currentRound];
 
+  const speakWord = useCallback(() => {
+    if (currentWord && 'speechSynthesis' in window) {
+      try {
+        // Cancel any ongoing speech
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(currentWord.word);
+        utterance.lang = 'en-US';
+        utterance.onerror = (event) => {
+          console.error('Speech synthesis error:', event);
+        };
+        window.speechSynthesis.speak(utterance);
+      } catch (error) {
+        console.error('Error in speech synthesis:', error);
+      }
+    }
+  }, [currentWord]);
+
   const handleAnswer = (selectedWord) => {
     setSelectedAnswer(selectedWord);
     
@@ -208,7 +226,14 @@ function WordCatcher({ onComplete, onBack }) {
       <div className="word-display-box">
         <div className={`falling-word ${feedback}`}>
           <h2>{currentWord.word}</h2>
-          <p className="hebrew-hint">({currentWord.hebrew})</p>
+          <button 
+            className="speak-button"
+            onClick={speakWord}
+            aria-label="Speak the word"
+            title="Click to hear the word"
+          >
+            🔊
+          </button>
         </div>
       </div>
 
@@ -227,7 +252,6 @@ function WordCatcher({ onComplete, onBack }) {
             disabled={selectedAnswer !== null}
           >
             <div className="emoji-large">{option.emoji}</div>
-            <div className="option-text">{option.word}</div>
           </button>
         ))}
       </div>
