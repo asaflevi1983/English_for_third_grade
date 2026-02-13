@@ -11,7 +11,7 @@
       var currentPath = window.location.pathname;
       
       // If we're not at the base path, redirect there
-      if (currentPath !== basePath && !currentPath.startsWith(basePath)) {
+      if (!currentPath.startsWith(basePath)) {
         window.location.replace(basePath);
       }
     </script>
