@@ -1,8 +1,18 @@
 // Centralized sound effects utility using Web Audio API
 // Provides better, more pleasant sound effects for the educational games
 
+// Create a single shared AudioContext instance for efficiency
+let audioContext = null;
+
+const getAudioContext = () => {
+  if (!audioContext) {
+    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  return audioContext;
+};
+
 export const playSound = (type) => {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+  const audioContext = getAudioContext();
   
   if (type === 'correct') {
     // Play a cheerful ascending melody (C-E-G major chord arpeggio)
@@ -36,6 +46,10 @@ const playNote = (audioContext, frequency, startTime, duration, volume = 0.3) =>
   const sustainLevel = volume * 0.7;
   const releaseTime = 0.1;
   
+  // Ensure minimum duration to prevent envelope overlap
+  const minDuration = attackTime + decayTime + releaseTime;
+  const effectiveDuration = Math.max(duration, minDuration);
+  
   // Attack
   gainNode.gain.setValueAtTime(0, now);
   gainNode.gain.linearRampToValueAtTime(volume, now + attackTime);
@@ -46,11 +60,11 @@ const playNote = (audioContext, frequency, startTime, duration, volume = 0.3) =>
   // Sustain (implicit - no change)
   
   // Release
-  const releaseStart = now + duration - releaseTime;
+  const releaseStart = now + effectiveDuration - releaseTime;
   gainNode.gain.setValueAtTime(sustainLevel, releaseStart);
   gainNode.gain.linearRampToValueAtTime(0, releaseStart + releaseTime);
   
   // Start and stop oscillator
   oscillator.start(now);
-  oscillator.stop(now + duration);
+  oscillator.stop(now + effectiveDuration);
 };
