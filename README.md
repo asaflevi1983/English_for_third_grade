@@ -67,6 +67,14 @@ npm run build
 npm run preview
 ```
 
+## 🚀 פריסה ל-GitHub Pages
+
+האתר מפורסם אוטומטית ל-GitHub Pages עם כל push ל-branch ה-main.
+
+- **כתובת האתר**: https://asaflevi1983.github.io/English_for_third_grade/
+- הפריסה מתבצעת אוטומטית באמצעות GitHub Actions
+- הקוד נבנה עם Vite והמוצר הסופי מועלה ל-GitHub Pages
+
 ## 🛠️ טכנולוגיות
 
 - **React 19.2** - ספרית UI
