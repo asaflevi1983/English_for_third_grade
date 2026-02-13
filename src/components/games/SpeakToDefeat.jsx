@@ -76,9 +76,9 @@ function SpeakToDefeat({ onComplete, onBack }) {
       playSuccessSound();
       
       setTimeout(() => {
+        setFeedback('');
         setCurrentRound(prev => {
           if (prev < PRONUNCIATION_WORDS.length - 1) {
-            setFeedback('');
             return prev + 1;
           } else {
             setIsGameComplete(true);
@@ -106,9 +106,9 @@ function SpeakToDefeat({ onComplete, onBack }) {
       playSuccessSound();
       
       setTimeout(() => {
+        setFeedback('');
         setCurrentRound(prev => {
           if (prev < PRONUNCIATION_WORDS.length - 1) {
-            setFeedback('');
             return prev + 1;
           } else {
             setIsGameComplete(true);

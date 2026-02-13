@@ -115,10 +115,10 @@ function ChooseThePower({ onComplete, onBack }) {
       playSuccessSound();
 
       setTimeout(() => {
+        setSelectedAnswer(null);
+        setFeedback('');
         setCurrentQuestion(prev => {
           if (prev < QUIZ_QUESTIONS.length - 1) {
-            setSelectedAnswer(null);
-            setFeedback('');
             return prev + 1;
           } else {
             setIsGameComplete(true);

@@ -52,11 +52,11 @@ function ListenAndWrite({ onComplete, onBack }) {
       playSound('correct');
 
       setTimeout(() => {
+        setUserInput('');
+        setFeedback('');
+        setHasPlayed(false);
         setCurrentRound(prev => {
           if (prev < totalRounds - 1) {
-            setUserInput('');
-            setFeedback('');
-            setHasPlayed(false);
             return prev + 1;
           } else {
             setIsGameComplete(true);
@@ -82,11 +82,11 @@ function ListenAndWrite({ onComplete, onBack }) {
   };
 
   const skipLetter = () => {
+    setUserInput('');
+    setFeedback('');
+    setHasPlayed(false);
     setCurrentRound(prev => {
       if (prev < totalRounds - 1) {
-        setUserInput('');
-        setFeedback('');
-        setHasPlayed(false);
         return prev + 1;
       } else {
         setIsGameComplete(true);

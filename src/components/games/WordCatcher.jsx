@@ -160,10 +160,10 @@ function WordCatcher({ onComplete, onBack }) {
       playSuccessSound();
       
       setTimeout(() => {
+        setSelectedAnswer(null);
+        setFeedback('');
         setCurrentRound(prev => {
           if (prev < 5) {
-            setSelectedAnswer(null);
-            setFeedback('');
             return prev + 1;
           } else {
             setIsGameComplete(true);

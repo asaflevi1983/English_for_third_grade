@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './SpellTheMagic.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
@@ -12,23 +12,38 @@ const SPELLING_WORDS = [
 ];
 
 function SpellTheMagic({ onComplete, onBack }) {
+  // Pre-generate shuffled letters for all words
+  const [allShuffledLetters] = useState(() => {
+    return SPELLING_WORDS.map(wordData => {
+      const letters = wordData.word.split('');
+      return [...letters].sort(() => Math.random() - 0.5);
+    });
+  });
+  
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState([]);
-  const [shuffledLetters, setShuffledLetters] = useState([]);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
 
   const currentWordData = SPELLING_WORDS[currentRound];
-
-  useEffect(() => {
-    if (currentWordData) {
-      const letters = currentWordData.word.split('');
-      const shuffled = [...letters].sort(() => Math.random() - 0.5);
-      setShuffledLetters(shuffled);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentRound]);
+  const [shuffledLetters, setShuffledLetters] = useState(() => allShuffledLetters[0]);
+  
+  // Update shuffled letters when advancing rounds
+  const advanceRound = () => {
+    setUserAnswer([]);
+    setFeedback('');
+    setCurrentRound(prev => {
+      const nextRound = prev + 1;
+      if (nextRound < SPELLING_WORDS.length) {
+        setShuffledLetters(allShuffledLetters[nextRound]);
+        return nextRound;
+      } else {
+        setIsGameComplete(true);
+        return prev;
+      }
+    });
+  };
 
   const handleLetterClick = (letter, index) => {
     setUserAnswer([...userAnswer, letter]);
@@ -51,16 +66,7 @@ function SpellTheMagic({ onComplete, onBack }) {
       playSuccessSound();
 
       setTimeout(() => {
-        setCurrentRound(prev => {
-          if (prev < SPELLING_WORDS.length - 1) {
-            setUserAnswer([]);
-            setFeedback('');
-            return prev + 1;
-          } else {
-            setIsGameComplete(true);
-            return prev;
-          }
-        });
+        advanceRound();
       }, 1500);
     } else {
       setFeedback('wrong');
