@@ -1,0 +1,73 @@
+.progress-tracker {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 15px 25px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.stars-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.star-icon {
+  font-size: 2rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.star-count {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f5576c;
+}
+
+.badges-container {
+  display: flex;
+  align-items: center;
+}
+
+.badges-list {
+  display: flex;
+  gap: 8px;
+}
+
+.badge {
+  font-size: 1.5rem;
+  animation: bounce 1s ease-in-out infinite;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.badge:hover {
+  transform: scale(1.3);
+}
+
+@media (max-width: 768px) {
+  .progress-tracker {
+    top: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    gap: 15px;
+  }
+  
+  .star-icon {
+    font-size: 1.5rem;
+  }
+  
+  .star-count {
+    font-size: 1.2rem;
+  }
+  
+  .badge {
+    font-size: 1.2rem;
+  }
+}
