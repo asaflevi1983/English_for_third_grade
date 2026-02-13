@@ -6,7 +6,7 @@ const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M'
 function ListenAndWrite({ onComplete, onBack }) {
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
-  const [currentLetter, setCurrentLetter] = useState('');
+  const [currentLetter, setCurrentLetter] = useState(() => LETTERS[Math.floor(Math.random() * LETTERS.length)]);
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
@@ -14,10 +14,11 @@ function ListenAndWrite({ onComplete, onBack }) {
 
   const totalRounds = 6;
 
-  // Select a new random letter when round changes
+  // Select a new random letter when round changes (but not on initial render)
   useEffect(() => {
-    if (currentRound < totalRounds) {
+    if (currentRound > 0 && currentRound < totalRounds) {
       const randomLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCurrentLetter(randomLetter);
       setHasPlayed(false);
     }

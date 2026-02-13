@@ -10,20 +10,18 @@ import ProgressTracker from './components/ProgressTracker';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState('home');
-  const [progress, setProgress] = useState({
-    stars: 0,
-    badges: [],
-    completedGames: [],
-    scores: {}
-  });
-
-  // Load progress from localStorage
-  useEffect(() => {
+  const [progress, setProgress] = useState(() => {
     const savedProgress = localStorage.getItem('kpop-hunter-progress');
     if (savedProgress) {
-      setProgress(JSON.parse(savedProgress));
+      return JSON.parse(savedProgress);
     }
-  }, []);
+    return {
+      stars: 0,
+      badges: [],
+      completedGames: [],
+      scores: {}
+    };
+  });
 
   // Save progress to localStorage
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import './WordCatcher.css';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
@@ -116,28 +116,21 @@ function WordCatcher({ onComplete, onBack }) {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [shuffledWords, setShuffledWords] = useState([]);
+  const [shuffledWords] = useState(() => [...WORDS_DATA].sort(() => Math.random() - 0.5));
   const [isGameComplete, setIsGameComplete] = useState(false);
-  const [options, setOptions] = useState([]);
-
-  useEffect(() => {
-    // Shuffle words for the game
-    const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
-    setShuffledWords(shuffled);
-  }, []);
-
-  useEffect(() => {
-    if (shuffledWords.length > 0) {
-      const currentWord = shuffledWords[currentRound];
-      const otherWords = shuffledWords.filter((_, idx) => idx !== currentRound);
-      const newOptions = currentWord 
-        ? [currentWord, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5)
-        : [];
-      setOptions(newOptions);
-    }
-  }, [currentRound, shuffledWords]);
 
   const currentWord = shuffledWords[currentRound];
+  
+  // Generate options once per round with consistent shuffling
+  const [optionsCache] = useState(() => {
+    // Pre-generate shuffled options for each round
+    return shuffledWords.map((word, idx) => {
+      const otherWords = shuffledWords.filter((_, i) => i !== idx);
+      return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
+    });
+  });
+
+  const options = currentWord ? optionsCache[currentRound] || [] : [];
 
   const handleAnswer = (selectedWord) => {
     setSelectedAnswer(selectedWord);

@@ -15,19 +15,28 @@ function SpellTheMagic({ onComplete, onBack }) {
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState([]);
-  const [shuffledLetters, setShuffledLetters] = useState([]);
   const [feedback, setFeedback] = useState('');
   const [isGameComplete, setIsGameComplete] = useState(false);
 
   const currentWordData = SPELLING_WORDS[currentRound];
+  const [shuffledLetters, setShuffledLetters] = useState(() => {
+    if (currentWordData) {
+      const letters = currentWordData.word.split('');
+      return [...letters].sort(() => Math.random() - 0.5);
+    }
+    return [];
+  });
 
   useEffect(() => {
     if (currentWordData) {
       const letters = currentWordData.word.split('');
       const shuffled = [...letters].sort(() => Math.random() - 0.5);
+       
       setShuffledLetters(shuffled);
+      setUserAnswer([]); // Reset user answer when round changes
     }
-  }, [currentRound, currentWordData]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentRound]); // currentWordData is derived from currentRound
 
   const handleLetterClick = (letter, index) => {
     setUserAnswer([...userAnswer, letter]);
