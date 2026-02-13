@@ -147,7 +147,6 @@ function WordCatcher({ onComplete, onBack }) {
         
         const utterance = new SpeechSynthesisUtterance(currentWord.word);
         utterance.lang = 'en-US';
-        utterance.rate = 0.8;
         utterance.onerror = (event) => {
           console.error('Speech synthesis error:', event);
         };
