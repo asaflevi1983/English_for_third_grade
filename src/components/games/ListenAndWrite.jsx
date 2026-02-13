@@ -87,29 +87,36 @@ function ListenAndWrite({ onComplete, onBack }) {
   };
 
   const playSound = (type) => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
+    try {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
 
-    if (type === 'correct') {
-      oscillator.frequency.value = 880; // A5
-      gainNode.gain.value = 0.3;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.2);
-    } else {
-      oscillator.frequency.value = 130;
-      oscillator.type = 'sawtooth';
-      gainNode.gain.value = 0.2;
-      oscillator.start();
-      oscillator.stop(audioContext.currentTime + 0.3);
+      if (type === 'correct') {
+        oscillator.frequency.value = 880; // A5
+        gainNode.gain.value = 0.3;
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.2);
+      } else {
+        oscillator.frequency.value = 130;
+        oscillator.type = 'sawtooth';
+        gainNode.gain.value = 0.2;
+        oscillator.start();
+        oscillator.stop(audioContext.currentTime + 0.3);
+      }
+    } catch (error) {
+      // Silently fail if audio is not supported
+      console.error('Audio playback failed:', error);
     }
   };
 
   if (isGameComplete) {
-    const finalScore = Math.max(1, score);
+    // Ensure minimum of 1 star for completing the game
+    const MIN_STARS = 1;
+    const finalScore = Math.max(MIN_STARS, score);
     return (
       <div className="game-container listen-write">
         <div className="completion-screen">
@@ -155,7 +162,7 @@ function ListenAndWrite({ onComplete, onBack }) {
       </div>
 
       <div className="input-section">
-        <h3>כתבו את האות שהאתם שומעים:</h3>
+        <h3>כתבו את האות שאתם שומעים:</h3>
         <input
           type="text"
           className={`letter-input ${feedback}`}
