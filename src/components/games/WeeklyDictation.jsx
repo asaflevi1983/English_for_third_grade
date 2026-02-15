@@ -4,6 +4,8 @@ import SuccessCartoon from '../SuccessCartoon';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/1W7djOpaEE1YdEBRq8ZfHbF6bPIvNDglb0JVC_UOfM2k/export?format=csv&gid=0';
+// Award at least 1 star for completing the game, even if no words were correct
+const MIN_REWARD_STARS = 1;
 
 function WeeklyDictation({ onComplete, onBack }) {
   const [words, setWords] = useState([]);
@@ -159,7 +161,6 @@ function WeeklyDictation({ onComplete, onBack }) {
   const checkAnswer = () => {
     const currentWord = words[currentWordIndex].word;
     const newStatuses = [...letterStatuses];
-    let hasErrors = false;
     let allCorrect = true;
     
     for (let i = 0; i < currentWord.length; i++) {
@@ -167,14 +168,13 @@ function WeeklyDictation({ onComplete, onBack }) {
         newStatuses[i] = 'correct';
       } else {
         newStatuses[i] = 'wrong';
-        hasErrors = true;
         allCorrect = false;
       }
     }
     
     setLetterStatuses(newStatuses);
     
-    if (hasErrors) {
+    if (!allCorrect) {
       playErrorSound();
     }
     
@@ -239,8 +239,6 @@ function WeeklyDictation({ onComplete, onBack }) {
   }
 
   if (isGameComplete) {
-    // Award at least 1 star for completing the game, even if no words were correct
-    const MIN_REWARD_STARS = 1;
     const finalScore = Math.max(MIN_REWARD_STARS, score);
     
     return (
@@ -267,7 +265,7 @@ function WeeklyDictation({ onComplete, onBack }) {
 
   const currentWord = words[currentWordIndex];
   const canCheck = letterInputs.every(input => input !== '') && 
-                   !letterStatuses.every(status => status === 'correct');
+                   letterStatuses.some(status => status !== 'correct');
 
   return (
     <div className="game-container weekly-dictation">
