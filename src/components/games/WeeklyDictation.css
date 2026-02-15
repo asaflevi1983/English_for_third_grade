@@ -1,0 +1,355 @@
+.weekly-dictation {
+  direction: rtl;
+  text-align: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.weekly-dictation .game-header h1 {
+  font-size: 2.5rem;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin-bottom: 10px;
+}
+
+.weekly-dictation .instructions {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+}
+
+.weekly-dictation .score-display {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 10px 20px;
+  color: #fff;
+  font-size: 1.1rem;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.loading-screen,
+.error-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  color: #fff;
+}
+
+.loading-spinner {
+  font-size: 4rem;
+  animation: spin 2s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.error-screen .error-icon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+
+.error-screen p {
+  font-size: 1.3rem;
+  margin: 10px 0;
+}
+
+.error-detail {
+  font-size: 1rem !important;
+  opacity: 0.8;
+}
+
+.word-section {
+  margin: 30px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.speak-button {
+  font-size: 1.5rem;
+  padding: 15px 40px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.speak-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.speak-button:active {
+  transform: scale(0.98);
+}
+
+.confusion-hint {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  padding: 8px 20px;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.letter-boxes-container {
+  margin: 40px auto;
+  max-width: 800px;
+}
+
+.letter-boxes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.letter-box {
+  width: 60px;
+  height: 70px;
+  font-size: 2rem;
+  text-align: center;
+  border: 3px solid #fff;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.letter-box:focus {
+  outline: none;
+  border-color: #ffd700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+  transform: scale(1.05);
+}
+
+.letter-box.correct {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  border-color: #00f2fe;
+  color: #fff;
+  cursor: not-allowed;
+  animation: correctPulse 0.5s ease;
+}
+
+.letter-box.wrong {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+  border-color: #fa709a;
+  color: #fff;
+  animation: shake 0.5s ease;
+}
+
+@keyframes correctPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.word-length-hint {
+  color: #fff;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.check-button {
+  font-size: 1.3rem;
+  padding: 12px 50px;
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  border: none;
+  border-radius: 50px;
+  color: #fff;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  margin: 20px 0;
+}
+
+.check-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.check-button:active {
+  transform: scale(0.98);
+}
+
+.battle-scene {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-top: 40px;
+}
+
+.student-character,
+.demon-target {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.character-icon,
+.demon-target {
+  font-size: 4rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.character-label {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.vs-text {
+  color: #fff;
+  font-size: 2rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.completion-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.completion-content {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 30px;
+  padding: 50px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  max-width: 500px;
+}
+
+.completion-celebration {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  animation: bounce 1s ease infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.completion-content h1 {
+  color: #764ba2;
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+}
+
+.completion-content p {
+  color: #666;
+  font-size: 1.3rem;
+  margin-bottom: 30px;
+}
+
+.final-score {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  padding: 25px;
+  margin: 30px 0;
+}
+
+.final-score h2 {
+  color: #fff;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.stars-earned {
+  color: #ffd700;
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.back {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 25px;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.back:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .weekly-dictation .game-header h1 {
+    font-size: 2rem;
+  }
+  
+  .letter-box {
+    width: 50px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .battle-scene {
+    gap: 20px;
+  }
+  
+  .character-icon,
+  .demon-target {
+    font-size: 3rem;
+  }
+  
+  .completion-content {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .letter-box {
+    width: 45px;
+    height: 55px;
+    font-size: 1.3rem;
+    gap: 5px;
+  }
+  
+  .speak-button {
+    font-size: 1.2rem;
+    padding: 12px 30px;
+  }
+}

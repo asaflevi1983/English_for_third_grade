@@ -9,6 +9,7 @@ import ListenAndWrite from './components/games/ListenAndWrite';
 import RhymeTime from './components/games/RhymeTime';
 import MemoryMatch from './components/games/MemoryMatch';
 import CountTheStars from './components/games/CountTheStars';
+import WeeklyDictation from './components/games/WeeklyDictation';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -112,6 +113,13 @@ function App() {
           addStars(score);
           addBadge('סופר המספרים');
           completeGame('count-stars', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'weekly-dictation':
+        return <WeeklyDictation onComplete={(score) => {
+          addStars(score);
+          addBadge('מלך ההכתבה');
+          completeGame('weekly-dictation', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:
