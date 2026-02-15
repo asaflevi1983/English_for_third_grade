@@ -65,10 +65,18 @@ function Home({ onStartGame, progress }) {
       emoji: '🔢',
       description: 'ספרו כמה פריטים יש!',
       color: '#00f2fe'
+    },
+    {
+      id: 'weekly-dictation',
+      title: 'הכתבה שבועית',
+      subtitle: 'Weekly Dictation',
+      emoji: '🗓️',
+      description: 'המורה בחר מילים לשבוע הזה',
+      color: '#667eea'
     }
   ];
 
-  const allGamesCompleted = progress.completedGames.length === 8;
+  const allGamesCompleted = progress.completedGames.length === 9;
 
   return (
     <div className="home-container">
