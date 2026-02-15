@@ -3,7 +3,7 @@ import './WeeklyDictation.css';
 import SuccessCartoon from '../SuccessCartoon';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/1W7djOpaEE1YdEBRq8ZfHbF6bPIvNDglb0JVC_UOfM2k/export?format=csv&gid=0';
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/1W7djOpaEE1YdEBRq8ZfHbF6bPIvNDglb0JVC_UOfM2k/gviz/tq?tqx=out:csv&sheet=Sheet1';
 // Award at least 1 star for completing the game, even if no words were correct
 const MIN_REWARD_STARS = 1;
 
@@ -22,6 +22,8 @@ function WeeklyDictation({ onComplete, onBack }) {
   // Load CSV data on mount
   useEffect(() => {
     loadWordsFromCSV();
+    // Only run on mount, loadWordsFromCSV is not a dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Initialize letter inputs when word changes
@@ -44,9 +46,9 @@ function WeeklyDictation({ onComplete, onBack }) {
       setLoading(true);
       setError(null);
       
-      const response = await fetch(CSV_URL);
+      const response = await fetch(CSV_URL, { cache: 'no-store' });
       if (!response.ok) {
-        throw new Error('Failed to fetch CSV');
+        throw new Error(`Failed to fetch CSV (${response.status} ${response.statusText})`);
       }
       
       const csvText = await response.text();
@@ -70,31 +72,53 @@ function WeeklyDictation({ onComplete, onBack }) {
     
     if (lines.length === 0) return [];
     
+    // Detect delimiter from first line (comma, semicolon, or tab)
+    const firstLine = lines[0];
+    let delimiter = ',';
+    if (firstLine.includes('\t')) {
+      delimiter = '\t';
+    } else if (firstLine.includes(';') && !firstLine.includes(',')) {
+      delimiter = ';';
+    }
+    
     // Check if first line looks like a header
-    const firstLine = lines[0].toLowerCase();
-    const hasHeader = firstLine.includes('word') || firstLine.includes('confusion') || firstLine.includes('enabled');
+    const firstLineLower = firstLine.toLowerCase();
+    const hasHeader = firstLineLower.includes('word') || firstLineLower.includes('confusion') || firstLineLower.includes('enabled');
+    
+    // Parse header to map column names to indices
+    let headerMap = {};
+    if (hasHeader) {
+      const headers = firstLine.split(delimiter).map(h => h.trim().replace(/^["']|["']$/g, '').toLowerCase());
+      headers.forEach((header, index) => {
+        headerMap[header] = index;
+      });
+    }
     
     const dataLines = hasHeader ? lines.slice(1) : lines;
     const parsedWords = [];
     
     for (const line of dataLines) {
-      // Simple CSV parsing - split by comma and handle quotes
-      const values = line.split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
+      // Split by detected delimiter and handle quotes
+      const values = line.split(delimiter).map(v => v.trim().replace(/^["']|["']$/g, ''));
       
       if (values.length === 0 || !values[0]) continue;
       
-      const word = values[0].trim();
+      // Get word from first column or mapped column
+      const wordIndex = headerMap['word'] !== undefined ? headerMap['word'] : 0;
+      const word = values[wordIndex]?.trim();
       if (!word) continue;
       
       if (hasHeader) {
-        // With header: check if enabled
-        const enabled = values[2] || '';
-        const isEnabled = /^(true|1|yes|y)$/i.test(enabled);
+        // With header: check if enabled using mapped index
+        const enabledIndex = headerMap['enabled'] !== undefined ? headerMap['enabled'] : 2;
+        const enabled = values[enabledIndex] || '';
+        const isEnabled = /^(true|1|yes|y)$/i.test(enabled.trim());
         
         if (isEnabled) {
+          const confusionIndex = headerMap['confusion'] !== undefined ? headerMap['confusion'] : 1;
           parsedWords.push({
             word,
-            confusion: values[1] || ''
+            confusion: values[confusionIndex] || ''
           });
         }
       } else {
