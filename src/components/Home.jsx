@@ -76,7 +76,7 @@ function Home({ onStartGame, progress }) {
     }
   ];
 
-  const allGamesCompleted = progress.completedGames.length === 9;
+  const allGamesCompleted = progress.completedGames.length === games.length;
 
   return (
     <div className="home-container">

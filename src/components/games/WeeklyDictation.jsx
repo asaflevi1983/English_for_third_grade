@@ -239,8 +239,9 @@ function WeeklyDictation({ onComplete, onBack }) {
   }
 
   if (isGameComplete) {
-    const MIN_STARS = 1;
-    const finalScore = Math.max(MIN_STARS, score);
+    // Award at least 1 star for completing the game, even if no words were correct
+    const MIN_REWARD_STARS = 1;
+    const finalScore = Math.max(MIN_REWARD_STARS, score);
     
     return (
       <div className="game-container weekly-dictation">
@@ -294,20 +295,23 @@ function WeeklyDictation({ onComplete, onBack }) {
 
       <div className="letter-boxes-container">
         <div className="letter-boxes">
-          {letterInputs.map((letter, index) => (
-            <input
-              key={index}
-              ref={el => inputRefs.current[index] = el}
-              type="text"
-              className={`letter-box ${letterStatuses[index]}`}
-              value={letter}
-              onChange={(e) => handleLetterChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-              maxLength="1"
-              disabled={letterStatuses[index] === 'correct'}
-              readOnly={letterStatuses[index] === 'correct'}
-            />
-          ))}
+          {letterInputs.map((letter, index) => {
+            const isLetterCorrect = letterStatuses[index] === 'correct';
+            return (
+              <input
+                key={index}
+                ref={el => inputRefs.current[index] = el}
+                type="text"
+                className={`letter-box ${letterStatuses[index]}`}
+                value={letter}
+                onChange={(e) => handleLetterChange(index, e.target.value)}
+                onKeyDown={(e) => handleKeyDown(index, e)}
+                maxLength="1"
+                disabled={isLetterCorrect}
+                readOnly={isLetterCorrect}
+              />
+            );
+          })}
         </div>
         
         <div className="word-length-hint">
