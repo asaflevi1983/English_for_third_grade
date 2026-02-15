@@ -49,56 +49,52 @@ function WeeklyDictation({ onComplete, onBack }) {
       const response = await fetch(CSV_URL, { cache: 'no-store' });
       if (!response.ok) {
         // Detailed error for HTTP failures
-        let errorDetails = {
-          message: `Failed to load Google Sheets data`,
-          url: CSV_URL,
-          status: response.status,
-          statusText: response.statusText,
-          type: 'HTTP_ERROR'
-        };
+        const error = new Error(`Failed to load Google Sheets data`);
+        error.url = CSV_URL;
+        error.status = response.status;
+        error.statusText = response.statusText;
+        error.type = 'HTTP_ERROR';
         
         // Provide specific troubleshooting for common status codes
         if (response.status === 403) {
-          errorDetails.reason = 'Access Denied - The sheet may be private or permissions not set correctly';
-          errorDetails.solution = 'Make sure the Google Sheet is set to "Anyone with the link can view"';
+          error.reason = 'Access Denied - The sheet may be private or permissions not set correctly';
+          error.solution = 'Make sure the Google Sheet is set to "Anyone with the link can view"';
         } else if (response.status === 404) {
-          errorDetails.reason = 'Sheet Not Found - The sheet ID may be incorrect or the sheet was deleted';
-          errorDetails.solution = 'Verify the Google Sheets URL in the code is correct';
+          error.reason = 'Sheet Not Found - The sheet ID may be incorrect or the sheet was deleted';
+          error.solution = 'Verify the Google Sheets URL in the code is correct';
         } else if (response.status === 429) {
-          errorDetails.reason = 'Too Many Requests - Google Sheets API rate limit exceeded';
-          errorDetails.solution = 'Wait a few minutes before trying again';
+          error.reason = 'Too Many Requests - Google Sheets API rate limit exceeded';
+          error.solution = 'Wait a few minutes before trying again';
         } else {
-          errorDetails.reason = `Server returned ${response.status} ${response.statusText}`;
-          errorDetails.solution = 'Check your internet connection and try again';
+          error.reason = `Server returned ${response.status} ${response.statusText}`;
+          error.solution = 'Check your internet connection and try again';
         }
         
-        throw errorDetails;
+        throw error;
       }
       
       const csvText = await response.text();
       
       // Check if response looks like CSV data
       if (!csvText || csvText.trim().length === 0) {
-        throw {
-          message: 'Empty Response',
-          url: CSV_URL,
-          reason: 'The Google Sheets returned empty data',
-          solution: 'Make sure the sheet has data and the sheet name is correct',
-          type: 'EMPTY_RESPONSE'
-        };
+        const error = new Error('Empty Response');
+        error.url = CSV_URL;
+        error.reason = 'The Google Sheets returned empty data';
+        error.solution = 'Make sure the sheet has data and the sheet name is correct';
+        error.type = 'EMPTY_RESPONSE';
+        throw error;
       }
       
       const parsedWords = parseCSV(csvText);
       
       if (parsedWords.length === 0) {
-        throw {
-          message: 'No Words Found',
-          url: CSV_URL,
-          reason: 'The sheet has data but no enabled words were found',
-          solution: 'Make sure at least one word has "enabled" set to true in the sheet',
-          type: 'NO_ENABLED_WORDS',
-          rawDataPreview: csvText.substring(0, 200) + (csvText.length > 200 ? '...' : '')
-        };
+        const error = new Error('No Words Found');
+        error.url = CSV_URL;
+        error.reason = 'The sheet has data but no enabled words were found';
+        error.solution = 'Make sure at least one word has "enabled" set to true in the sheet';
+        error.type = 'NO_ENABLED_WORDS';
+        error.rawDataPreview = csvText.substring(0, 200) + (csvText.length > 200 ? '...' : '');
+        throw error;
       }
       
       setWords(parsedWords);
@@ -114,9 +110,19 @@ function WeeklyDictation({ onComplete, onBack }) {
           type: 'NETWORK_ERROR',
           originalError: err.message
         });
-      } else if (typeof err === 'object' && err.type) {
-        // Our custom error objects
-        setError(err);
+      } else if (err instanceof Error && err.type) {
+        // Our custom Error objects with attached properties
+        setError({
+          message: err.message,
+          url: err.url,
+          status: err.status,
+          statusText: err.statusText,
+          reason: err.reason,
+          solution: err.solution,
+          type: err.type,
+          rawDataPreview: err.rawDataPreview,
+          originalError: err.originalError
+        });
       } else {
         // Generic error
         setError({
