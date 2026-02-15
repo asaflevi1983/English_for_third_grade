@@ -48,20 +48,86 @@ function WeeklyDictation({ onComplete, onBack }) {
       
       const response = await fetch(CSV_URL, { cache: 'no-store' });
       if (!response.ok) {
-        throw new Error(`Failed to fetch CSV (${response.status} ${response.statusText})`);
+        // Detailed error for HTTP failures
+        let errorDetails = {
+          message: `Failed to load Google Sheets data`,
+          url: CSV_URL,
+          status: response.status,
+          statusText: response.statusText,
+          type: 'HTTP_ERROR'
+        };
+        
+        // Provide specific troubleshooting for common status codes
+        if (response.status === 403) {
+          errorDetails.reason = 'Access Denied - The sheet may be private or permissions not set correctly';
+          errorDetails.solution = 'Make sure the Google Sheet is set to "Anyone with the link can view"';
+        } else if (response.status === 404) {
+          errorDetails.reason = 'Sheet Not Found - The sheet ID may be incorrect or the sheet was deleted';
+          errorDetails.solution = 'Verify the Google Sheets URL in the code is correct';
+        } else if (response.status === 429) {
+          errorDetails.reason = 'Too Many Requests - Google Sheets API rate limit exceeded';
+          errorDetails.solution = 'Wait a few minutes before trying again';
+        } else {
+          errorDetails.reason = `Server returned ${response.status} ${response.statusText}`;
+          errorDetails.solution = 'Check your internet connection and try again';
+        }
+        
+        throw errorDetails;
       }
       
       const csvText = await response.text();
+      
+      // Check if response looks like CSV data
+      if (!csvText || csvText.trim().length === 0) {
+        throw {
+          message: 'Empty Response',
+          url: CSV_URL,
+          reason: 'The Google Sheets returned empty data',
+          solution: 'Make sure the sheet has data and the sheet name is correct',
+          type: 'EMPTY_RESPONSE'
+        };
+      }
+      
       const parsedWords = parseCSV(csvText);
       
       if (parsedWords.length === 0) {
-        throw new Error('No words found in the sheet');
+        throw {
+          message: 'No Words Found',
+          url: CSV_URL,
+          reason: 'The sheet has data but no enabled words were found',
+          solution: 'Make sure at least one word has "enabled" set to true in the sheet',
+          type: 'NO_ENABLED_WORDS',
+          rawDataPreview: csvText.substring(0, 200) + (csvText.length > 200 ? '...' : '')
+        };
       }
       
       setWords(parsedWords);
       setLoading(false);
     } catch (err) {
-      setError(err.message);
+      // Handle network errors (no internet, CORS, etc.)
+      if (err instanceof TypeError && err.message.includes('fetch')) {
+        setError({
+          message: 'Network Error',
+          url: CSV_URL,
+          reason: 'Failed to connect to Google Sheets',
+          solution: 'Check your internet connection. If the problem persists, there may be a CORS issue.',
+          type: 'NETWORK_ERROR',
+          originalError: err.message
+        });
+      } else if (typeof err === 'object' && err.type) {
+        // Our custom error objects
+        setError(err);
+      } else {
+        // Generic error
+        setError({
+          message: 'Unknown Error',
+          url: CSV_URL,
+          reason: err.message || 'An unexpected error occurred',
+          solution: 'Try refreshing the page or contact support',
+          type: 'UNKNOWN_ERROR',
+          originalError: err.message
+        });
+      }
       setLoading(false);
     }
   };
@@ -236,10 +302,73 @@ function WeeklyDictation({ onComplete, onBack }) {
         <button className="back" onClick={onBack}>← חזור</button>
         <div className="error-screen">
           <div className="error-icon">⚠️</div>
-          <p>לא הצלחתי לטעון מילים מהגיליון</p>
-          <p className="error-detail">{error}</p>
-          <button className="primary" onClick={loadWordsFromCSV}>
-            נסה שוב
+          <h2 className="error-title">שגיאה בטעינת הגיליון</h2>
+          
+          {/* Main error message */}
+          <div className="error-message">
+            {typeof error === 'string' ? error : error.message}
+          </div>
+          
+          {/* Detailed debugging information */}
+          {typeof error === 'object' && (
+            <div className="error-debug-info">
+              <div className="debug-section">
+                <strong>🔍 פרטי שגיאה לניפוי באגים:</strong>
+                
+                {error.reason && (
+                  <div className="debug-item">
+                    <span className="debug-label">סיבה:</span>
+                    <span className="debug-value">{error.reason}</span>
+                  </div>
+                )}
+                
+                {error.solution && (
+                  <div className="debug-item solution">
+                    <span className="debug-label">💡 פתרון מוצע:</span>
+                    <span className="debug-value">{error.solution}</span>
+                  </div>
+                )}
+                
+                {error.status && (
+                  <div className="debug-item">
+                    <span className="debug-label">HTTP Status:</span>
+                    <span className="debug-value">{error.status} - {error.statusText}</span>
+                  </div>
+                )}
+                
+                {error.type && (
+                  <div className="debug-item">
+                    <span className="debug-label">Error Type:</span>
+                    <span className="debug-value">{error.type}</span>
+                  </div>
+                )}
+                
+                {error.url && (
+                  <div className="debug-item">
+                    <span className="debug-label">URL:</span>
+                    <span className="debug-value url-value">{error.url}</span>
+                  </div>
+                )}
+                
+                {error.originalError && (
+                  <div className="debug-item">
+                    <span className="debug-label">Original Error:</span>
+                    <span className="debug-value">{error.originalError}</span>
+                  </div>
+                )}
+                
+                {error.rawDataPreview && (
+                  <div className="debug-item">
+                    <span className="debug-label">Data Preview:</span>
+                    <pre className="debug-value preview">{error.rawDataPreview}</pre>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+          
+          <button className="primary retry-button" onClick={loadWordsFromCSV}>
+            🔄 נסה שוב
           </button>
         </div>
       </div>
