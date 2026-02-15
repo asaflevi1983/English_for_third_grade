@@ -6,6 +6,8 @@ import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/1W7djOpaEE1YdEBRq8ZfHbF6bPIvNDglb0JVC_UOfM2k/gviz/tq?tqx=out:csv&sheet=Sheet1';
 // Award at least 1 star for completing the game, even if no words were correct
 const MIN_REWARD_STARS = 1;
+// Maximum length of raw data to show in error preview
+const DATA_PREVIEW_LENGTH = 200;
 
 function WeeklyDictation({ onComplete, onBack }) {
   const [words, setWords] = useState([]);
@@ -93,7 +95,7 @@ function WeeklyDictation({ onComplete, onBack }) {
         error.reason = 'The sheet has data but no enabled words were found';
         error.solution = 'Make sure at least one word has "enabled" set to true in the sheet';
         error.type = 'NO_ENABLED_WORDS';
-        error.rawDataPreview = csvText.substring(0, 200) + (csvText.length > 200 ? '...' : '');
+        error.rawDataPreview = csvText.substring(0, DATA_PREVIEW_LENGTH) + (csvText.length > DATA_PREVIEW_LENGTH ? '...' : '');
         throw error;
       }
       
@@ -101,7 +103,8 @@ function WeeklyDictation({ onComplete, onBack }) {
       setLoading(false);
     } catch (err) {
       // Handle network errors (no internet, CORS, etc.)
-      if (err instanceof TypeError && err.message.includes('fetch')) {
+      if (err instanceof TypeError) {
+        // TypeError typically indicates fetch/network failures
         setError({
           message: 'Network Error',
           url: CSV_URL,
