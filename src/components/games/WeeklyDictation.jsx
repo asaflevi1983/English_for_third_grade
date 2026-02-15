@@ -9,6 +9,16 @@ const MIN_REWARD_STARS = 1;
 // Maximum length of raw data to show in error preview
 const DATA_PREVIEW_LENGTH = 200;
 
+// Fisher-Yates shuffle algorithm for randomizing array order
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 function WeeklyDictation({ onComplete, onBack }) {
   const [words, setWords] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -99,7 +109,9 @@ function WeeklyDictation({ onComplete, onBack }) {
         throw error;
       }
       
-      setWords(parsedWords);
+      // Shuffle words to randomize order - never the same sequence
+      const shuffledWords = shuffleArray(parsedWords);
+      setWords(shuffledWords);
       setLoading(false);
     } catch (err) {
       // Handle network errors (no internet, CORS, etc.)
