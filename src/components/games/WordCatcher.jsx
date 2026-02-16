@@ -112,13 +112,23 @@ const WORDS_DATA = [
   { word: 'scarf', emoji: '🧣', hebrew: 'צעיף' },
 ];
 
+// Fisher-Yates shuffle algorithm for uniform randomization
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
 // Helper function to shuffle words and generate options
 const generateGameData = () => {
-  const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
+  const shuffled = shuffleArray(WORDS_DATA);
   // Pre-generate all options for each round
   const allOptions = shuffled.map((word, idx) => {
     const otherWords = shuffled.filter((_, i) => i !== idx);
-    return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
+    return shuffleArray([word, ...otherWords.slice(0, 2)]);
   });
   return { shuffledWords: shuffled, optionsByRound: allOptions };
 };
