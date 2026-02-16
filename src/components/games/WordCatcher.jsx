@@ -222,33 +222,69 @@ const shuffleArray = (array) => {
   return shuffled;
 };
 
-// Helper function to shuffle words and generate options
-const generateGameData = () => {
-  const shuffled = shuffleArray(WORDS_DATA);
-  // Pre-generate all options for each round
-  const allOptions = shuffled.map((word, idx) => {
-    const otherWords = shuffled.filter((_, i) => i !== idx);
-    return shuffleArray([word, ...otherWords.slice(0, 2)]);
-  });
-  return { shuffledWords: shuffled, optionsByRound: allOptions };
+// Helper function to generate random options for a word
+const generateOptionsForWord = (correctWord, allWords, recentWords = []) => {
+  // Filter out the correct word and recently shown words
+  const recentSet = new Set(recentWords.map(w => w.word));
+  const availableWords = allWords.filter(w => 
+    w.word !== correctWord.word && !recentSet.has(w.word)
+  );
+  
+  // If we don't have enough words (shouldn't happen with 206 words), fall back to all words
+  const poolToUse = availableWords.length >= 2 ? availableWords : 
+    allWords.filter(w => w.word !== correctWord.word);
+  
+  // Randomly pick 2 words from the pool
+  const shuffledPool = shuffleArray(poolToUse);
+  const wrongOptions = shuffledPool.slice(0, 2);
+  
+  // Return shuffled options including the correct word
+  return shuffleArray([correctWord, ...wrongOptions]);
+};
+
+// Helper function to pick next word that hasn't been shown recently
+const pickNextWord = (allWords, recentWords) => {
+  const recentSet = new Set(recentWords.map(w => w.word));
+  
+  // Get words that haven't been shown recently
+  const availableWords = allWords.filter(w => !recentSet.has(w.word));
+  
+  // If we've shown almost all words, reset and start fresh with a shuffle
+  if (availableWords.length < 10) {
+    const freshShuffle = shuffleArray(allWords);
+    return { word: freshShuffle[0], index: 0, needsReshuffle: true };
+  }
+  
+  // Pick a random word from available words
+  const randomIndex = Math.floor(Math.random() * availableWords.length);
+  const selectedWord = availableWords[randomIndex];
+  
+  return { word: selectedWord, index: allWords.indexOf(selectedWord), needsReshuffle: false };
 };
 
 // onComplete is kept for interface consistency with other games, but not used since game is infinite
 // eslint-disable-next-line no-unused-vars
 function WordCatcher({ onComplete, onBack }) {
-  // Pre-shuffle words and options once for consistency
-  const [gameData, setGameData] = useState(() => generateGameData());
-  
+  // Initialize with shuffled words and track recently shown words
+  const [allWords] = useState(() => shuffleArray(WORDS_DATA));
+  const [recentWords, setRecentWords] = useState([]);
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
-  // Handle word wrapping - when we run out, reshuffle
-  const currentWordIndex = currentRound % gameData.shuffledWords.length;
-  const currentWord = gameData.shuffledWords[currentWordIndex];
-  const options = gameData.optionsByRound[currentWordIndex] || [];
+  // Pick current word and generate options dynamically
+  const [currentWordData, setCurrentWordData] = useState(() => {
+    const firstWord = allWords[0];
+    return {
+      word: firstWord,
+      options: generateOptionsForWord(firstWord, allWords, [])
+    };
+  });
+
+  const currentWord = currentWordData.word;
+  const options = currentWordData.options;
 
   const speakWord = useCallback(() => {
     if (currentWord && 'speechSynthesis' in window) {
@@ -278,13 +314,22 @@ function WordCatcher({ onComplete, onBack }) {
       setShowSuccessCartoon(true);
       
       setTimeout(() => {
-        // Check if we've completed all words in current batch
-        if ((currentRound + 1) % gameData.shuffledWords.length === 0) {
-          // Reshuffle for next batch
-          setGameData(generateGameData());
-        }
-        
         setCurrentRound(prev => prev + 1);
+        
+        // Update recent words list (keep last 50 words)
+        setRecentWords(prev => {
+          const updated = [...prev, currentWord];
+          return updated.length > 50 ? updated.slice(-50) : updated;
+        });
+        
+        // Pick next word that hasn't been shown recently
+        const nextWordResult = pickNextWord(allWords, [...recentWords, currentWord]);
+        
+        setCurrentWordData({
+          word: nextWordResult.word,
+          options: generateOptionsForWord(nextWordResult.word, allWords, [...recentWords, currentWord])
+        });
+        
         setSelectedAnswer(null);
         setFeedback('');
         setShowSuccessCartoon(false);
