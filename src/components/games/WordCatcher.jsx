@@ -127,7 +127,7 @@ const WORDS_DATA = [
   { word: 'toilet', emoji: '🚽', hebrew: 'אסלה' },
   { word: 'brush', emoji: '🪥', hebrew: 'מברשת' },
   { word: 'soap', emoji: '🧼', hebrew: 'סבון' },
-  { word: 'towel', emoji: '🧺', hebrew: 'מגבת' },
+  { word: 'towel', emoji: '🛀', hebrew: 'מגבת' },
   { word: 'basket', emoji: '🧺', hebrew: 'סל' },
   { word: 'broom', emoji: '🧹', hebrew: 'מטאטא' },
   { word: 'key', emoji: '🔑', hebrew: 'מפתח' },
