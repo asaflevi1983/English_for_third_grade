@@ -112,9 +112,10 @@ const WORDS_DATA = [
   { word: 'scarf', emoji: '🧣', hebrew: 'צעיף' },
 ];
 
+// eslint-disable-next-line no-unused-vars
 function WordCatcher({ onComplete, onBack }) {
   // Pre-shuffle words and options once for consistency
-  const [gameData] = useState(() => {
+  const [gameData, setGameData] = useState(() => {
     const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
     // Pre-generate all options for each round
     const allOptions = shuffled.map((word, idx) => {
@@ -128,11 +129,12 @@ function WordCatcher({ onComplete, onBack }) {
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [isGameComplete, setIsGameComplete] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
-  const currentWord = gameData.shuffledWords[currentRound];
-  const options = gameData.optionsByRound[currentRound] || [];
+  // Handle word wrapping - when we run out, reshuffle
+  const currentWordIndex = currentRound % gameData.shuffledWords.length;
+  const currentWord = gameData.shuffledWords[currentWordIndex];
+  const options = gameData.optionsByRound[currentWordIndex] || [];
 
   const speakWord = useCallback(() => {
     if (currentWord && 'speechSynthesis' in window) {
@@ -157,19 +159,26 @@ function WordCatcher({ onComplete, onBack }) {
     
     if (selectedWord.word === currentWord.word) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore(prev => prev + 1);
       playSuccessSound();
       setShowSuccessCartoon(true);
       
       setTimeout(() => {
-        if (currentRound < 5) {
-          setCurrentRound(currentRound + 1);
-          setSelectedAnswer(null);
-          setFeedback('');
-          setShowSuccessCartoon(false);
-        } else {
-          setIsGameComplete(true);
+        // Check if we've completed all words in current batch
+        if ((currentRound + 1) % gameData.shuffledWords.length === 0) {
+          // Reshuffle for next batch
+          const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
+          const allOptions = shuffled.map((word, idx) => {
+            const otherWords = shuffled.filter((_, i) => i !== idx);
+            return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
+          });
+          setGameData({ shuffledWords: shuffled, optionsByRound: allOptions });
         }
+        
+        setCurrentRound(prev => prev + 1);
+        setSelectedAnswer(null);
+        setFeedback('');
+        setShowSuccessCartoon(false);
       }, 1500);
     } else {
       setFeedback('wrong');
@@ -182,30 +191,6 @@ function WordCatcher({ onComplete, onBack }) {
     }
   };
 
-  if (isGameComplete) {
-    const finalScore = Math.max(1, score);
-    return (
-      <div className="game-container word-catcher">
-        <div className="completion-screen">
-          <div className="demon-defeated">
-            <div className="demon-explosion">💥</div>
-            <h1>🎉 ניצחתם את השד! 🎉</h1>
-            <p>השד הוכה והמילים ניצלו!</p>
-            <div className="final-score">
-              <h2>הציון שלכם: {score} / 6</h2>
-              <div className="stars-earned">
-                ⭐ זכיתם ב-{finalScore} כוכבים!
-              </div>
-            </div>
-            <button className="success" onClick={() => onComplete(finalScore)}>
-              חזור לבית
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (!currentWord) return <div className="loading">טוען...</div>;
 
   return (
@@ -216,7 +201,7 @@ function WordCatcher({ onComplete, onBack }) {
         <h1>🎯 תופס המילים 🎯</h1>
         <p className="instructions">תפסו את התמונה הנכונה למילה!</p>
         <div className="score-display">
-          נכון: {score} | שאלה: {currentRound + 1}/6
+          נכון: {score} | שאלה: {currentRound + 1}
         </div>
       </div>
 
