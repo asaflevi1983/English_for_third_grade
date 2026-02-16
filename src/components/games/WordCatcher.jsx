@@ -112,18 +112,22 @@ const WORDS_DATA = [
   { word: 'scarf', emoji: '🧣', hebrew: 'צעיף' },
 ];
 
+// Helper function to shuffle words and generate options
+const generateGameData = () => {
+  const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
+  // Pre-generate all options for each round
+  const allOptions = shuffled.map((word, idx) => {
+    const otherWords = shuffled.filter((_, i) => i !== idx);
+    return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
+  });
+  return { shuffledWords: shuffled, optionsByRound: allOptions };
+};
+
+// onComplete is kept for interface consistency with other games, but not used since game is infinite
 // eslint-disable-next-line no-unused-vars
 function WordCatcher({ onComplete, onBack }) {
   // Pre-shuffle words and options once for consistency
-  const [gameData, setGameData] = useState(() => {
-    const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
-    // Pre-generate all options for each round
-    const allOptions = shuffled.map((word, idx) => {
-      const otherWords = shuffled.filter((_, i) => i !== idx);
-      return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
-    });
-    return { shuffledWords: shuffled, optionsByRound: allOptions };
-  });
+  const [gameData, setGameData] = useState(() => generateGameData());
   
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
@@ -167,12 +171,7 @@ function WordCatcher({ onComplete, onBack }) {
         // Check if we've completed all words in current batch
         if ((currentRound + 1) % gameData.shuffledWords.length === 0) {
           // Reshuffle for next batch
-          const shuffled = [...WORDS_DATA].sort(() => Math.random() - 0.5);
-          const allOptions = shuffled.map((word, idx) => {
-            const otherWords = shuffled.filter((_, i) => i !== idx);
-            return [word, ...otherWords.slice(0, 2)].sort(() => Math.random() - 0.5);
-          });
-          setGameData({ shuffledWords: shuffled, optionsByRound: allOptions });
+          setGameData(generateGameData());
         }
         
         setCurrentRound(prev => prev + 1);
