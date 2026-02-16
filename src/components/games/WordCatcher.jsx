@@ -212,6 +212,10 @@ const WORDS_DATA = [
   { word: 'crab', emoji: '🦀', hebrew: 'סרטן' },
 ];
 
+// Constants for randomization
+const RECENT_WORDS_LIMIT = 50; // Track last 50 words to avoid repetition
+const RESHUFFLE_THRESHOLD = 10; // Reshuffle when fewer than 10 available words
+
 // Fisher-Yates shuffle algorithm for uniform randomization
 const shuffleArray = (array) => {
   const shuffled = [...array];
@@ -250,7 +254,7 @@ const pickNextWord = (allWords, recentWords) => {
   const availableWords = allWords.filter(w => !recentSet.has(w.word));
   
   // If we've shown almost all words, reset and start fresh with a shuffle
-  if (availableWords.length < 10) {
+  if (availableWords.length < RESHUFFLE_THRESHOLD) {
     const freshShuffle = shuffleArray(allWords);
     return { word: freshShuffle[0], index: 0, needsReshuffle: true };
   }
@@ -316,10 +320,10 @@ function WordCatcher({ onComplete, onBack }) {
       setTimeout(() => {
         setCurrentRound(prev => prev + 1);
         
-        // Update recent words list (keep last 50 words)
+        // Update recent words list (keep last RECENT_WORDS_LIMIT words)
         setRecentWords(prev => {
           const updated = [...prev, currentWord];
-          return updated.length > 50 ? updated.slice(-50) : updated;
+          return updated.length > RECENT_WORDS_LIMIT ? updated.slice(-RECENT_WORDS_LIMIT) : updated;
         });
         
         // Pick next word that hasn't been shown recently
