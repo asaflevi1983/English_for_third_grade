@@ -76,6 +76,15 @@ function Home({ onStartGame, progress }) {
     }
   ];
 
+  const communityCard = {
+    id: 'community-board',
+    title: 'לוח המסרים',
+    subtitle: 'Community Board',
+    emoji: '💬',
+    description: 'שתפו הישגים ומסרים לחברי הכיתה!',
+    color: '#f093fb'
+  };
+
   const allGamesCompleted = progress.completedGames.length === games.length;
 
   return (
@@ -120,6 +129,25 @@ function Home({ onStartGame, progress }) {
             </div>
           );
         })}
+      </div>
+
+      <div className="community-section">
+        <div
+          className="game-card community-card"
+          style={{ borderColor: communityCard.color }}
+        >
+          <div className="game-emoji">{communityCard.emoji}</div>
+          <h3 className="game-title">{communityCard.title}</h3>
+          <p className="game-subtitle">{communityCard.subtitle}</p>
+          <p className="game-description">{communityCard.description}</p>
+          <button
+            className="primary play-button"
+            onClick={() => onStartGame(communityCard.id)}
+            style={{ background: `linear-gradient(135deg, ${communityCard.color}, ${communityCard.color}dd)` }}
+          >
+            כנסו ללוח
+          </button>
+        </div>
       </div>
 
       {allGamesCompleted && (

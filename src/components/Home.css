@@ -109,6 +109,17 @@
   margin-top: 10px;
 }
 
+.community-section {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0 40px;
+}
+
+.community-card {
+  max-width: 360px;
+  width: 100%;
+}
+
 .victory-banner {
   background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
   border-radius: 25px;
