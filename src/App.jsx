@@ -10,6 +10,7 @@ import RhymeTime from './components/games/RhymeTime';
 import MemoryMatch from './components/games/MemoryMatch';
 import CountTheStars from './components/games/CountTheStars';
 import WeeklyDictation from './components/games/WeeklyDictation';
+import CommunityBoard from './components/CommunityBoard';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -122,6 +123,8 @@ function App() {
           completeGame('weekly-dictation', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
+      case 'community-board':
+        return <CommunityBoard onBack={() => setCurrentScreen('home')} />;
       default:
         return <Home onStartGame={setCurrentScreen} progress={progress} />;
     }
