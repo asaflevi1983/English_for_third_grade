@@ -73,6 +73,14 @@ function Home({ onStartGame, progress }) {
       emoji: '🗓️',
       description: 'המורה בחר מילים לשבוע הזה',
       color: '#667eea'
+    },
+    {
+      id: 'adding-numbers',
+      title: 'חיבור מספרים',
+      subtitle: 'Adding Numbers',
+      emoji: '➕',
+      description: 'חברו 3 מספרים גדולים יחד!',
+      color: '#ff9a3c'
     }
   ];
 

@@ -10,6 +10,7 @@ import RhymeTime from './components/games/RhymeTime';
 import MemoryMatch from './components/games/MemoryMatch';
 import CountTheStars from './components/games/CountTheStars';
 import WeeklyDictation from './components/games/WeeklyDictation';
+import AddingNumbers from './components/games/AddingNumbers';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -120,6 +121,13 @@ function App() {
           addStars(score);
           addBadge('מלך ההכתבה');
           completeGame('weekly-dictation', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'adding-numbers':
+        return <AddingNumbers onComplete={(score) => {
+          addStars(score);
+          addBadge('מוסיף מספרים');
+          completeGame('adding-numbers', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:
