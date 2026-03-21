@@ -1,0 +1,260 @@
+.israel-quiz {
+  background: linear-gradient(135deg, #0038b8 0%, #ffffff 50%, #0038b8 100%);
+  padding: 20px;
+  direction: rtl;
+}
+
+.israel-quiz .game-header h1 {
+  color: #0038b8;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.israel-quiz .instructions {
+  color: #333;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.israel-quiz .score-display {
+  color: #0038b8;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.progress-bar-container {
+  text-align: center;
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+.progress-bar-label {
+  color: #0038b8;
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-shadow: 1px 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+.progress-bar {
+  width: 100%;
+  height: 35px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 4px solid #0038b8;
+  border-radius: 25px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #0038b8 0%, #4facfe 100%);
+  transition: width 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-left: 10px;
+  border-radius: 25px;
+}
+
+.progress-star {
+  font-size: 1.3rem;
+  animation: bounce 0.5s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.israel-question-card {
+  background: white;
+  border-radius: 25px;
+  padding: 40px;
+  margin: 30px auto;
+  max-width: 700px;
+  box-shadow: 0 10px 40px rgba(0, 56, 184, 0.3);
+  text-align: center;
+  border: 3px solid #0038b8;
+}
+
+.question-text {
+  font-size: 2rem;
+  color: #333;
+  line-height: 1.6;
+}
+
+.israel-quiz .answers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 900px;
+  margin: 30px auto;
+}
+
+.israel-quiz .answer-option {
+  background: white;
+  border: 4px solid #0038b8;
+  border-radius: 25px;
+  padding: 30px 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 56, 184, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.israel-quiz .answer-option:hover:not(:disabled) {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 40px rgba(0, 56, 184, 0.35);
+  border-color: #ffd700;
+  background: #f0f7ff;
+}
+
+.israel-quiz .answer-option:disabled {
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.israel-quiz .answer-option.correct {
+  background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+  border-color: #43e97b;
+  animation: success-pulse 0.5s ease-in-out;
+}
+
+@keyframes success-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.israel-quiz .answer-option.correct .option-emoji,
+.israel-quiz .answer-option.correct .option-label {
+  color: white;
+}
+
+.israel-quiz .answer-option.wrong {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  border-color: #ff6b6b;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.israel-quiz .answer-option.wrong .option-emoji,
+.israel-quiz .answer-option.wrong .option-label {
+  color: white;
+}
+
+.israel-quiz .option-emoji {
+  font-size: 4rem;
+}
+
+.israel-quiz .option-label {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.israel-quiz .completion-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+
+.quiz-complete {
+  background: white;
+  border-radius: 30px;
+  padding: 60px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 56, 184, 0.3);
+  max-width: 600px;
+  animation: fadeIn 1s ease-in-out;
+  border: 4px solid #0038b8;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.celebration-icons {
+  font-size: 6rem;
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+.quiz-complete h1 {
+  font-size: 2.5rem;
+  color: #0038b8;
+  margin: 20px 0;
+}
+
+.quiz-complete p {
+  font-size: 1.5rem;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.israel-quiz .final-score h2 {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.israel-quiz .stars-earned {
+  font-size: 1.8rem;
+  color: #ffd700;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  .israel-quiz .answers-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .israel-question-card {
+    padding: 25px;
+  }
+
+  .question-text {
+    font-size: 1.5rem;
+  }
+
+  .israel-quiz .answer-option {
+    padding: 20px 15px;
+  }
+
+  .israel-quiz .option-emoji {
+    font-size: 3rem;
+  }
+
+  .israel-quiz .option-label {
+    font-size: 1.2rem;
+  }
+
+  .quiz-complete {
+    padding: 40px 25px;
+  }
+
+  .celebration-icons {
+    font-size: 4rem;
+  }
+
+  .quiz-complete h1 {
+    font-size: 2rem;
+  }
+}

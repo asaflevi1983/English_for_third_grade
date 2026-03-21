@@ -3,13 +3,13 @@ import './App.css';
 import Home from './components/Home';
 import WordCatcher from './components/games/WordCatcher';
 import SpellTheMagic from './components/games/SpellTheMagic';
-import SpeakToDefeat from './components/games/SpeakToDefeat';
 import ChooseThePower from './components/games/ChooseThePower';
 import ListenAndWrite from './components/games/ListenAndWrite';
 import RhymeTime from './components/games/RhymeTime';
 import MemoryMatch from './components/games/MemoryMatch';
-import CountTheStars from './components/games/CountTheStars';
 import WeeklyDictation from './components/games/WeeklyDictation';
+import AddThreeNumbers from './components/games/AddThreeNumbers';
+import IsraelQuiz from './components/games/IsraelQuiz';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -73,13 +73,6 @@ function App() {
           completeGame('spell-magic', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
-      case 'speak-defeat':
-        return <SpeakToDefeat onComplete={(score) => {
-          addStars(score);
-          addBadge('לוחם הדיבור');
-          completeGame('speak-defeat', score);
-          setCurrentScreen('home');
-        }} onBack={() => setCurrentScreen('home')} />;
       case 'choose-power':
         return <ChooseThePower onComplete={(score) => {
           addStars(score);
@@ -108,18 +101,25 @@ function App() {
           completeGame('memory-match', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
-      case 'count-stars':
-        return <CountTheStars onComplete={(score) => {
-          addStars(score);
-          addBadge('סופר המספרים');
-          completeGame('count-stars', score);
-          setCurrentScreen('home');
-        }} onBack={() => setCurrentScreen('home')} />;
       case 'weekly-dictation':
         return <WeeklyDictation onComplete={(score) => {
           addStars(score);
           addBadge('מלך ההכתבה');
           completeGame('weekly-dictation', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'add-three-numbers':
+        return <AddThreeNumbers onComplete={(score) => {
+          addStars(score);
+          addBadge('אלוף החיבור');
+          completeGame('add-three-numbers', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'israel-quiz':
+        return <IsraelQuiz onComplete={(score) => {
+          addStars(score);
+          addBadge('מומחה ישראל');
+          completeGame('israel-quiz', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:

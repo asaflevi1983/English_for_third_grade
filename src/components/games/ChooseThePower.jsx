@@ -6,7 +6,6 @@ import SuccessCartoon from '../SuccessCartoon';
 const QUIZ_QUESTIONS = [
   {
     question: 'Which one is RED?',
-    questionHebrew: 'איזה אחד אדום?',
     options: [
       { text: 'red apple', emoji: '🍎', correct: true },
       { text: 'green apple', emoji: '🍏', correct: false },
@@ -15,7 +14,6 @@ const QUIZ_QUESTIONS = [
   },
   {
     question: 'Which animal says "MEOW"?',
-    questionHebrew: 'איזה חיה אומרת "מיאו"?',
     options: [
       { text: 'dog', emoji: '🐶', correct: false },
       { text: 'cat', emoji: '🐱', correct: true },
@@ -24,7 +22,6 @@ const QUIZ_QUESTIONS = [
   },
   {
     question: 'What do you use to write?',
-    questionHebrew: 'במה אתם כותבים?',
     options: [
       { text: 'book', emoji: '📚', correct: false },
       { text: 'pencil', emoji: '✏️', correct: true },
@@ -33,7 +30,6 @@ const QUIZ_QUESTIONS = [
   },
   {
     question: 'Which one is YELLOW?',
-    questionHebrew: 'איזה אחד צהוב?',
     options: [
       { text: 'orange', emoji: '🍊', correct: false },
       { text: 'banana', emoji: '🍌', correct: true },
@@ -42,7 +38,6 @@ const QUIZ_QUESTIONS = [
   },
   {
     question: 'Which one can FLY?',
-    questionHebrew: 'איזה אחד יכול לעוף?',
     options: [
       { text: 'fish', emoji: '🐠', correct: false },
       { text: 'bird', emoji: '🐦', correct: true },
@@ -51,7 +46,6 @@ const QUIZ_QUESTIONS = [
   },
   {
     question: 'What gives us LIGHT?',
-    questionHebrew: 'מה נותן לנו אור?',
     options: [
       { text: 'moon', emoji: '🌙', correct: false },
       { text: 'sun', emoji: '☀️', correct: true },
@@ -145,16 +139,16 @@ function ChooseThePower({ onComplete, onBack }) {
         <div className="completion-screen">
           <div className="power-unleashed">
             <div className="power-blast">💥⚡💪</div>
-            <h1>🎉 כוח אדיר! 🎉</h1>
-            <p>השד הוכה בכוח הידע שלכם!</p>
+            <h1>🎉 Amazing Power! 🎉</h1>
+            <p>The demon was defeated by your knowledge!</p>
             <div className="final-score">
-              <h2>הציון שלכם: {score} / {QUIZ_QUESTIONS.length}</h2>
+              <h2>Your Score: {score} / {QUIZ_QUESTIONS.length}</h2>
               <div className="stars-earned">
-                ⭐ זכיתם ב-{finalScore} כוכבים!
+                ⭐ You earned {finalScore} stars!
               </div>
             </div>
             <button className="success" onClick={() => onComplete(finalScore)}>
-              חזור לבית
+              Back Home
             </button>
           </div>
         </div>
@@ -164,18 +158,18 @@ function ChooseThePower({ onComplete, onBack }) {
 
   return (
     <div className="game-container choose-power">
-      <button className="back" onClick={onBack}>← חזור</button>
+      <button className="back" onClick={onBack}>← Back</button>
       
       <div className="game-header">
-        <h1>💪 בחר את הכוח 💪</h1>
-        <p className="instructions">בחרו את התשובה הנכונה!</p>
+        <h1>💪 Choose the Power 💪</h1>
+        <p className="instructions">Choose the correct answer!</p>
         <div className="score-display">
-          נכון: {score} | שאלה: {currentQuestion + 1}/{QUIZ_QUESTIONS.length}
+          Correct: {score} | Question: {currentQuestion + 1}/{QUIZ_QUESTIONS.length}
         </div>
       </div>
 
       <div className="power-meter-container">
-        <div className="power-meter-label">מד הכוח:</div>
+        <div className="power-meter-label">Power Meter:</div>
         <div className="power-meter">
           <div 
             className="power-meter-fill"
@@ -188,7 +182,6 @@ function ChooseThePower({ onComplete, onBack }) {
 
       <div className="question-card">
         <h2 className="question-english">{question.question}</h2>
-        <p className="question-hebrew">{question.questionHebrew}</p>
         {'speechSynthesis' in window ? (
           <button 
             className="speak-button" 

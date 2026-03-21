@@ -19,14 +19,6 @@ function Home({ onStartGame, progress }) {
       color: '#4facfe'
     },
     {
-      id: 'speak-defeat',
-      title: 'מדברים כדי לנצח',
-      subtitle: 'Speak to Defeat',
-      emoji: '🎤',
-      description: 'תגידו את המילה בקול!',
-      color: '#43e97b'
-    },
-    {
       id: 'choose-power',
       title: 'בחר את הכוח',
       subtitle: 'Choose the Power',
@@ -59,20 +51,28 @@ function Home({ onStartGame, progress }) {
       color: '#f5576c'
     },
     {
-      id: 'count-stars',
-      title: 'ספרו את הכוכבים',
-      subtitle: 'Count the Stars',
-      emoji: '🔢',
-      description: 'ספרו כמה פריטים יש!',
-      color: '#00f2fe'
-    },
-    {
       id: 'weekly-dictation',
       title: 'הכתבה שבועית',
       subtitle: 'Weekly Dictation',
       emoji: '🗓️',
       description: 'המורה בחר מילים לשבוע הזה',
       color: '#667eea'
+    },
+    {
+      id: 'add-three-numbers',
+      title: 'חברו שלושה מספרים',
+      subtitle: 'Add Three Numbers',
+      emoji: '➕',
+      description: 'חברו שלושה מספרים גדולים!',
+      color: '#ff6b6b'
+    },
+    {
+      id: 'israel-quiz',
+      title: 'חידון ישראל',
+      subtitle: 'Israel Quiz',
+      emoji: '🇮🇱',
+      description: 'ענו על שאלות על מדינת ישראל!',
+      color: '#0038b8'
     }
   ];
 
