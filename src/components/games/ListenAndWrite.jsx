@@ -4,25 +4,27 @@ import SuccessCartoon from '../SuccessCartoon';
 
 const LETTERS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
 
+function getRandomLetter() {
+  return LETTERS[Math.floor(Math.random() * LETTERS.length)];
+}
+
 function ListenAndWrite({ onComplete, onBack }) {
-  const totalRounds = 6;
-  
-  // Pre-generate all letters for the game
-  const [roundLetters] = useState(() => {
-    return Array.from({ length: totalRounds }, () => 
-      LETTERS[Math.floor(Math.random() * LETTERS.length)]
-    );
-  });
-  
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userInput, setUserInput] = useState('');
   const [feedback, setFeedback] = useState('');
-  const [isGameComplete, setIsGameComplete] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
+  const [currentLetter, setCurrentLetter] = useState(() => getRandomLetter());
 
-  const currentLetter = roundLetters[currentRound];
+  const advanceRound = () => {
+    setCurrentRound((prev) => prev + 1);
+    setCurrentLetter(getRandomLetter());
+    setUserInput('');
+    setFeedback('');
+    setShowSuccessCartoon(false);
+    setHasPlayed(false);
+  };
 
   const playLetter = () => {
     if ('speechSynthesis' in window) {
@@ -48,20 +50,12 @@ function ListenAndWrite({ onComplete, onBack }) {
 
     if (userInput === currentLetter) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore((prev) => prev + 1);
       playSound('correct');
       setShowSuccessCartoon(true);
 
       setTimeout(() => {
-        if (currentRound < totalRounds - 1) {
-          setCurrentRound(currentRound + 1);
-          setUserInput('');
-          setFeedback('');
-          setShowSuccessCartoon(false);
-          setHasPlayed(false);
-        } else {
-          setIsGameComplete(true);
-        }
+        advanceRound();
       }, 1500);
     } else {
       setFeedback('wrong');
@@ -81,14 +75,7 @@ function ListenAndWrite({ onComplete, onBack }) {
   };
 
   const skipLetter = () => {
-    if (currentRound < totalRounds - 1) {
-      setCurrentRound(currentRound + 1);
-      setUserInput('');
-      setFeedback('');
-      setHasPlayed(false);
-    } else {
-      setIsGameComplete(true);
-    }
+    advanceRound();
   };
 
   const playSound = (type) => {
@@ -118,41 +105,18 @@ function ListenAndWrite({ onComplete, onBack }) {
     }
   };
 
-  if (isGameComplete) {
-    // Ensure minimum of 1 star for completing the game
-    const MIN_STARS = 1;
-    const finalScore = Math.max(MIN_STARS, score);
-    return (
-      <div className="game-container listen-write">
-        <div className="completion-screen">
-          <div className="letter-master">
-            <div className="letter-celebration">📝🎧✨</div>
-            <h1>🎉 מומחה אותיות! 🎉</h1>
-            <p>השד הוכה בכוח ההקשבה שלכם!</p>
-            <div className="final-score">
-              <h2>הציון שלכם: {score} / {totalRounds}</h2>
-              <div className="stars-earned">
-                ⭐ זכיתם ב-{finalScore} כוכבים!
-              </div>
-            </div>
-            <button className="success" onClick={() => onComplete(finalScore)}>
-              חזור לבית
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="game-container listen-write">
       <button className="back" onClick={onBack}>← חזור</button>
+      <button className="secondary finish-session-button" onClick={() => onComplete(score)}>
+        סיום ושמירה
+      </button>
 
       <div className="game-header">
         <h1>🎧 הקשיבו וכתבו 🎧</h1>
         <p className="instructions">הקשיבו לאות וכתבו אותה!</p>
         <div className="score-display">
-          נכון: {score} | שאלה: {currentRound + 1}/{totalRounds}
+          נכון: {score} | סיבוב: {currentRound + 1}
         </div>
       </div>
 

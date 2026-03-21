@@ -71,8 +71,16 @@ function Home({ onStartGame, progress }) {
       title: 'חידון ישראל',
       subtitle: 'Israel Quiz',
       emoji: '🇮🇱',
-      description: 'ענו על שאלות על מדינת ישראל!',
+      description: 'שאלות משופרות על ישראל בלי רמזים בתמונות!',
       color: '#0038b8'
+    },
+    {
+      id: 'world-quiz',
+      title: 'חידון עולמי',
+      subtitle: 'World Quiz',
+      emoji: '🌍',
+      description: 'חידון ידע עולמי עם שאלות חכמות ומגוונות!',
+      color: '#1d6f42'
     }
   ];
 

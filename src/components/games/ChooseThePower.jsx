@@ -57,16 +57,38 @@ const QUIZ_QUESTIONS = [
 // Delay before auto-speaking to prevent conflicts during UI rendering
 const SPEECH_DELAY_MS = 300;
 
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function ChooseThePower({ onComplete, onBack }) {
+  const [questionDeck, setQuestionDeck] = useState(() => shuffleArray(QUIZ_QUESTIONS));
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [powerMeter, setPowerMeter] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [feedback, setFeedback] = useState('');
-  const [isGameComplete, setIsGameComplete] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
-  const question = QUIZ_QUESTIONS[currentQuestion];
+  const question = questionDeck[currentQuestion % questionDeck.length];
+
+  const advanceQuestion = () => {
+    const nextQuestion = currentQuestion + 1;
+
+    if (nextQuestion % questionDeck.length === 0) {
+      setQuestionDeck(shuffleArray(QUIZ_QUESTIONS));
+    }
+
+    setCurrentQuestion(nextQuestion);
+    setSelectedAnswer(null);
+    setFeedback('');
+    setShowSuccessCartoon(false);
+  };
 
   const speakWord = useCallback(() => {
     if ('speechSynthesis' in window) {
@@ -89,37 +111,31 @@ function ChooseThePower({ onComplete, onBack }) {
 
   // Auto-speak the question when it changes
   useEffect(() => {
-    if (!isGameComplete) {
-      const timer = setTimeout(() => speakWord(), SPEECH_DELAY_MS);
-      return () => {
-        clearTimeout(timer);
-        // Cancel any ongoing speech when question changes
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-        }
-      };
-    }
-  }, [currentQuestion, isGameComplete, speakWord]);
+    const timer = setTimeout(() => speakWord(), SPEECH_DELAY_MS);
+    return () => {
+      clearTimeout(timer);
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [currentQuestion, speakWord]);
 
   const handleAnswer = (option, index) => {
+    if (selectedAnswer !== null) {
+      return;
+    }
+
     setSelectedAnswer(index);
 
     if (option.correct) {
       setFeedback('correct');
-      setScore(score + 1);
-      setPowerMeter(powerMeter + 1);
+      setScore((prev) => prev + 1);
+      setPowerMeter((prev) => (prev + 1) % questionDeck.length);
       playSuccessSound();
       setShowSuccessCartoon(true);
 
       setTimeout(() => {
-        if (currentQuestion < QUIZ_QUESTIONS.length - 1) {
-          setCurrentQuestion(currentQuestion + 1);
-          setSelectedAnswer(null);
-          setFeedback('');
-          setShowSuccessCartoon(false);
-        } else {
-          setIsGameComplete(true);
-        }
+        advanceQuestion();
       }, 1500);
     } else {
       setFeedback('wrong');
@@ -132,39 +148,18 @@ function ChooseThePower({ onComplete, onBack }) {
     }
   };
 
-  if (isGameComplete) {
-    const finalScore = Math.max(1, score);
-    return (
-      <div className="game-container choose-power">
-        <div className="completion-screen">
-          <div className="power-unleashed">
-            <div className="power-blast">💥⚡💪</div>
-            <h1>🎉 Amazing Power! 🎉</h1>
-            <p>The demon was defeated by your knowledge!</p>
-            <div className="final-score">
-              <h2>Your Score: {score} / {QUIZ_QUESTIONS.length}</h2>
-              <div className="stars-earned">
-                ⭐ You earned {finalScore} stars!
-              </div>
-            </div>
-            <button className="success" onClick={() => onComplete(finalScore)}>
-              Back Home
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="game-container choose-power">
       <button className="back" onClick={onBack}>← Back</button>
+      <button className="secondary finish-session-button" onClick={() => onComplete(score)}>
+        Finish & Save
+      </button>
       
       <div className="game-header">
         <h1>💪 Choose the Power 💪</h1>
         <p className="instructions">Choose the correct answer!</p>
         <div className="score-display">
-          Correct: {score} | Question: {currentQuestion + 1}/{QUIZ_QUESTIONS.length}
+          Correct: {score} | Round: {currentQuestion + 1}
         </div>
       </div>
 
@@ -173,7 +168,7 @@ function ChooseThePower({ onComplete, onBack }) {
         <div className="power-meter">
           <div 
             className="power-meter-fill"
-            style={{ width: `${(powerMeter / QUIZ_QUESTIONS.length) * 100}%` }}
+            style={{ width: `${((currentQuestion % questionDeck.length) / questionDeck.length) * 100}%` }}
           >
             <span className="power-bolt">⚡</span>
           </div>

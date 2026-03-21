@@ -12,24 +12,46 @@ const SPELLING_WORDS = [
   { word: 'TREE', emoji: '🌳', hebrew: 'עץ' },
 ];
 
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
+function shuffleLetters(word) {
+  return shuffleArray(word.split(''));
+}
+
 function SpellTheMagic({ onComplete, onBack }) {
-  // Pre-generate all shuffled letters for each word
-  const [roundLetters] = useState(() => {
-    return SPELLING_WORDS.map(wordData => {
-      const letters = wordData.word.split('');
-      return [...letters].sort(() => Math.random() - 0.5);
-    });
-  });
-  
+  const [wordDeck, setWordDeck] = useState(() => shuffleArray(SPELLING_WORDS));
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [userAnswer, setUserAnswer] = useState([]);
-  const [shuffledLetters, setShuffledLetters] = useState(() => roundLetters[0]);
+  const [shuffledLetters, setShuffledLetters] = useState(() => shuffleLetters(wordDeck[0].word));
   const [feedback, setFeedback] = useState('');
-  const [isGameComplete, setIsGameComplete] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
 
-  const currentWordData = SPELLING_WORDS[currentRound];
+  const currentWordData = wordDeck[currentRound % wordDeck.length];
+
+  const advanceRound = () => {
+    const nextRound = currentRound + 1;
+    const shouldReshuffle = nextRound % wordDeck.length === 0;
+    const nextDeck = shouldReshuffle ? shuffleArray(SPELLING_WORDS) : wordDeck;
+    const nextWordData = nextDeck[nextRound % nextDeck.length];
+
+    if (shouldReshuffle) {
+      setWordDeck(nextDeck);
+    }
+
+    setCurrentRound(nextRound);
+    setShuffledLetters(shuffleLetters(nextWordData.word));
+    setUserAnswer([]);
+    setFeedback('');
+    setShowSuccessCartoon(false);
+  };
 
   const handleLetterClick = (letter, index) => {
     setUserAnswer([...userAnswer, letter]);
@@ -48,21 +70,12 @@ function SpellTheMagic({ onComplete, onBack }) {
 
     if (userWord === correctWord) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore((prev) => prev + 1);
       playSuccessSound();
       setShowSuccessCartoon(true);
 
       setTimeout(() => {
-        if (currentRound < SPELLING_WORDS.length - 1) {
-          const nextRound = currentRound + 1;
-          setCurrentRound(nextRound);
-          setShuffledLetters(roundLetters[nextRound]);
-          setUserAnswer([]);
-          setFeedback('');
-          setShowSuccessCartoon(false);
-        } else {
-          setIsGameComplete(true);
-        }
+        advanceRound();
       }, 1500);
     } else {
       setFeedback('wrong');
@@ -74,39 +87,18 @@ function SpellTheMagic({ onComplete, onBack }) {
     }
   };
 
-  if (isGameComplete) {
-    const finalScore = Math.max(1, score);
-    return (
-      <div className="game-container spell-magic">
-        <div className="completion-screen">
-          <div className="magic-blast">
-            <div className="blast-animation">✨💥✨</div>
-            <h1>🎉 קסם מושלם! 🎉</h1>
-            <p>השד הוכה בכוח האיות שלכם!</p>
-            <div className="final-score">
-              <h2>הציון שלכם: {score} / {SPELLING_WORDS.length}</h2>
-              <div className="stars-earned">
-                ⭐ זכיתם ב-{finalScore} כוכבים!
-              </div>
-            </div>
-            <button className="success" onClick={() => onComplete(finalScore)}>
-              חזור לבית
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="game-container spell-magic">
       <button className="back" onClick={onBack}>← חזור</button>
+      <button className="secondary finish-session-button" onClick={() => onComplete(score)}>
+        סיום ושמירה
+      </button>
       
       <div className="game-header">
         <h1>✨ איות הקסם ✨</h1>
         <p className="instructions">סדרו את האותיות ליצירת המילה!</p>
         <div className="score-display">
-          נכון: {score} | שאלה: {currentRound + 1}/{SPELLING_WORDS.length}
+          נכון: {score} | סיבוב: {currentRound + 1}
         </div>
       </div>
 

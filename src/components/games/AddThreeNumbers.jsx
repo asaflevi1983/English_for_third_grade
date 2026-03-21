@@ -33,17 +33,15 @@ function getDigits(num, totalCols) {
 const TOTAL_ROUNDS = 10;
 
 function AddThreeNumbers({ onComplete, onBack }) {
-  const [rounds] = useState(() => Array.from({ length: TOTAL_ROUNDS }, generateRound));
+  const [round, setRound] = useState(() => generateRound());
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isCorrect, setIsCorrect] = useState(false);
-  const [isGameComplete, setIsGameComplete] = useState(false);
   const [answerDigits, setAnswerDigits] = useState([]);
   const inputRefs = useRef([]);
 
-  const round = rounds[currentRound];
   const answerStr = round.correctAnswer.toString();
   const answerLen = answerStr.length;
   // Total columns = max digits in answer (which is always >= any operand)
@@ -113,11 +111,8 @@ function AddThreeNumbers({ onComplete, onBack }) {
       playSuccessSound();
       // Auto-advance on correct answer
       setTimeout(() => {
-        if (currentRound < TOTAL_ROUNDS - 1) {
-          setCurrentRound(prev => prev + 1);
-        } else {
-          setIsGameComplete(true);
-        }
+        setCurrentRound(prev => prev + 1);
+        setRound(generateRound());
       }, 2000);
     } else {
       setIsCorrect(false);
@@ -140,40 +135,10 @@ function AddThreeNumbers({ onComplete, onBack }) {
   const handleSkip = () => {
     setFeedback(`התשובה הנכונה היא ${round.correctAnswer.toLocaleString()}`);
     setTimeout(() => {
-      if (currentRound < TOTAL_ROUNDS - 1) {
-        setCurrentRound(prev => prev + 1);
-      } else {
-        setIsGameComplete(true);
-      }
+      setCurrentRound(prev => prev + 1);
+      setRound(generateRound());
     }, 2000);
   };
-
-  if (isGameComplete) {
-    return (
-      <div className="add-three-container">
-        <div className="add-three-complete">
-          <h2>🏆 סיימתם!</h2>
-          <div className="add-three-final-score">
-            <span className="add-three-score-number">{score}</span>
-            <span className="add-three-score-label">מתוך {TOTAL_ROUNDS}</span>
-          </div>
-          <div className="add-three-stars">
-            {Array.from({ length: score }, (_, i) => (
-              <span key={i} className="add-three-star">⭐</span>
-            ))}
-          </div>
-          <p className="add-three-message">
-            {score >= 8 ? '🌟 מתמטיקאי אמיתי!' : score >= 5 ? '👍 עבודה יפה!' : '💪 נסו שוב!'}
-          </p>
-          <div className="add-three-buttons">
-            <button className="add-three-btn home-btn" onClick={() => onComplete(score)}>
-              🏠 חזרה הביתה
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   const num1Digits = getDigits(round.numbers[0], totalCols);
   const num2Digits = getDigits(round.numbers[1], totalCols);
@@ -183,10 +148,13 @@ function AddThreeNumbers({ onComplete, onBack }) {
 
   return (
     <div className="add-three-container">
+      <button className="secondary finish-session-button" onClick={() => onComplete(score)}>
+        סיום ושמירה
+      </button>
       <div className="add-three-header">
         <button className="add-three-back-btn" onClick={onBack}>← חזרה</button>
         <div className="add-three-progress">
-          שאלה {currentRound + 1} מתוך {TOTAL_ROUNDS}
+          סיבוב {currentRound + 1}
         </div>
         <div className="add-three-score-display">⭐ {score}</div>
       </div>
@@ -194,7 +162,7 @@ function AddThreeNumbers({ onComplete, onBack }) {
       <div className="add-three-progress-bar">
         <div
           className="add-three-progress-fill"
-          style={{ width: `${((currentRound) / TOTAL_ROUNDS) * 100}%` }}
+          style={{ width: `${((currentRound % TOTAL_ROUNDS) / TOTAL_ROUNDS) * 100}%` }}
         />
       </div>
 

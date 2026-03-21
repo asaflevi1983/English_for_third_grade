@@ -61,14 +61,35 @@ const RHYME_PAIRS = [
   }
 ];
 
+function shuffleArray(array) {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+}
+
 function RhymeTime({ onComplete, onBack }) {
+  const [pairDeck, setPairDeck] = useState(() => shuffleArray(RHYME_PAIRS));
   const [currentRound, setCurrentRound] = useState(0);
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState('');
   const [selectedAnswer, setSelectedAnswer] = useState(null);
-  const [isGameComplete, setIsGameComplete] = useState(false);
 
-  const currentPair = RHYME_PAIRS[currentRound];
+  const currentPair = pairDeck[currentRound % pairDeck.length];
+
+  const advanceRound = () => {
+    const nextRound = currentRound + 1;
+
+    if (nextRound % pairDeck.length === 0) {
+      setPairDeck(shuffleArray(RHYME_PAIRS));
+    }
+
+    setCurrentRound(nextRound);
+    setSelectedAnswer(null);
+    setFeedback('');
+  };
 
   const speakWord = useCallback((word) => {
     if ('speechSynthesis' in window) {
@@ -85,21 +106,19 @@ function RhymeTime({ onComplete, onBack }) {
   }, []);
 
   const handleRhymeSelect = (rhyme) => {
+    if (selectedAnswer !== null) {
+      return;
+    }
+
     setSelectedAnswer(rhyme);
     
     if (rhyme === currentPair.correctRhyme) {
       setFeedback('correct');
-      setScore(score + 1);
+      setScore((prev) => prev + 1);
       playSuccessSound();
       
       setTimeout(() => {
-        if (currentRound < RHYME_PAIRS.length - 1) {
-          setCurrentRound(currentRound + 1);
-          setSelectedAnswer(null);
-          setFeedback('');
-        } else {
-          setIsGameComplete(true);
-        }
+        advanceRound();
       }, 1500);
     } else {
       setFeedback('incorrect');
@@ -112,48 +131,28 @@ function RhymeTime({ onComplete, onBack }) {
     }
   };
 
-  const handleComplete = () => {
-    onComplete(score);
-  };
-
-  if (isGameComplete) {
-    return (
-      <div className="rhyme-time-container">
-        <div className="game-complete">
-          <div className="complete-icon">🎉</div>
-          <h2>כל הכבוד!</h2>
-          <h3>Amazing!</h3>
-          <p className="final-score">ניקוד: {score}/{RHYME_PAIRS.length}</p>
-          <div className="star-display">
-            {'⭐'.repeat(Math.min(score, 5))}
-          </div>
-          <button className="primary" onClick={handleComplete}>
-            סיום
-          </button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="rhyme-time-container">
       <div className="game-header">
         <button className="back-button" onClick={onBack}>
           ← חזרה
         </button>
+        <button className="secondary finish-session-button" onClick={() => onComplete(score)}>
+          סיום ושמירה
+        </button>
         <div className="game-title">
           <h2>🎵 זמן חרוזים 🎵</h2>
           <h3>Rhyme Time</h3>
         </div>
         <div className="score-display">
-          ניקוד: {score}/{RHYME_PAIRS.length}
+          ניקוד: {score} | סיבוב: {currentRound + 1}
         </div>
       </div>
 
       <div className="progress-bar">
         <div 
           className="progress-fill" 
-          style={{ width: `${((currentRound + 1) / RHYME_PAIRS.length) * 100}%` }}
+          style={{ width: `${(((currentRound % pairDeck.length) + 1) / pairDeck.length) * 100}%` }}
         />
       </div>
 

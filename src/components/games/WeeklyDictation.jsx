@@ -4,8 +4,6 @@ import SuccessCartoon from '../SuccessCartoon';
 import { playSuccessSound, playErrorSound } from '../../utils/audioUtils';
 
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/1W7djOpaEE1YdEBRq8ZfHbF6bPIvNDglb0JVC_UOfM2k/gviz/tq?tqx=out:csv&sheet=Sheet1';
-// Award at least 1 star for completing the game, even if no words were correct
-const MIN_REWARD_STARS = 1;
 // Maximum length of raw data to show in error preview
 const DATA_PREVIEW_LENGTH = 200;
 
@@ -27,7 +25,6 @@ function WeeklyDictation({ onComplete, onBack }) {
   const [letterInputs, setLetterInputs] = useState([]);
   const [letterStatuses, setLetterStatuses] = useState([]);
   const [score, setScore] = useState(0);
-  const [isGameComplete, setIsGameComplete] = useState(false);
   const [showSuccessCartoon, setShowSuccessCartoon] = useState(false);
   const inputRefs = useRef([]);
 
@@ -40,8 +37,8 @@ function WeeklyDictation({ onComplete, onBack }) {
 
   // Initialize letter inputs when word changes
   useEffect(() => {
-    if (words.length > 0 && currentWordIndex < words.length) {
-      const currentWord = words[currentWordIndex].word;
+    if (words.length > 0) {
+      const currentWord = words[currentWordIndex % words.length].word;
       setLetterInputs(new Array(currentWord.length).fill(''));
       setLetterStatuses(new Array(currentWord.length).fill('pending'));
       // Focus first input
@@ -296,11 +293,11 @@ function WeeklyDictation({ onComplete, onBack }) {
       
       setTimeout(() => {
         setShowSuccessCartoon(false);
-        if (currentWordIndex < words.length - 1) {
-          setCurrentWordIndex(prev => prev + 1);
-        } else {
-          setIsGameComplete(true);
+        const nextWordIndex = currentWordIndex + 1;
+        if (nextWordIndex % words.length === 0) {
+          setWords(prev => shuffleArray(prev));
         }
+        setCurrentWordIndex(nextWordIndex);
       }, 1500);
     }
   };
@@ -412,44 +409,22 @@ function WeeklyDictation({ onComplete, onBack }) {
     );
   }
 
-  if (isGameComplete) {
-    const finalScore = Math.max(MIN_REWARD_STARS, score);
-    
-    return (
-      <div className="game-container weekly-dictation">
-        <div className="completion-screen">
-          <div className="completion-content">
-            <div className="completion-celebration">📝🗓️✨</div>
-            <h1>🎉 כל הכבוד! 🎉</h1>
-            <p>סיימתם את ההכתבה השבועית!</p>
-            <div className="final-score">
-              <h2>הציון שלכם: {score} / {words.length}</h2>
-              <div className="stars-earned">
-                ⭐ זכיתם ב-{finalScore} כוכבים!
-              </div>
-            </div>
-            <button className="success" onClick={() => onComplete(finalScore)}>
-              חזור לבית
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const currentWord = words[currentWordIndex];
+  const currentWord = words[currentWordIndex % words.length];
   const canCheck = letterInputs.every(input => input !== '') && 
                    letterStatuses.some(status => status !== 'correct');
 
   return (
     <div className="game-container weekly-dictation">
       <button className="back" onClick={onBack}>← חזור</button>
+      <button className="secondary finish-session-button" onClick={() => onComplete(score)}>
+        סיום ושמירה
+      </button>
 
       <div className="game-header">
         <h1>🗓️ הכתבה שבועית 🗓️</h1>
         <p className="instructions">הקשיבו למילה וכתבו אותה אות אחרי אות</p>
         <div className="score-display">
-          נכון: {score} | מילה: {currentWordIndex + 1}/{words.length}
+          נכון: {score} | סיבוב: {currentWordIndex + 1}
         </div>
       </div>
 

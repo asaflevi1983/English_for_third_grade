@@ -10,6 +10,7 @@ import MemoryMatch from './components/games/MemoryMatch';
 import WeeklyDictation from './components/games/WeeklyDictation';
 import AddThreeNumbers from './components/games/AddThreeNumbers';
 import IsraelQuiz from './components/games/IsraelQuiz';
+import WorldQuiz from './components/games/WorldQuiz';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -120,6 +121,13 @@ function App() {
           addStars(score);
           addBadge('מומחה ישראל');
           completeGame('israel-quiz', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'world-quiz':
+        return <WorldQuiz onComplete={(score) => {
+          addStars(score);
+          addBadge('אזרח העולם');
+          completeGame('world-quiz', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:
