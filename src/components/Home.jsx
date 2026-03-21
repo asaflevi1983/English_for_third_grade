@@ -79,7 +79,7 @@ function Home({ onStartGame, progress }) {
       title: 'חידון עולמי',
       subtitle: 'World Quiz',
       emoji: '🌍',
-      description: 'חידון ידע עולמי עם שאלות חכמות ומגוונות!',
+      description: 'חידון ידע עולמי חדש עם שאלות חכמות ומגוונות!',
       color: '#1d6f42'
     }
   ];
