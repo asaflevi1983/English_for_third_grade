@@ -88,8 +88,8 @@ function FlowerQuiz({ onComplete, onBack }) {
       {showSuccessCartoon && <SuccessCartoon />}
 
       <div className="game-header">
-        <h1>🌸 זיהוי פרחים 🌺</h1>
-        <p className="instructions">זהו את הפרח בתמונה ובחרו את התשובה הנכונה!</p>
+        <h1>🌸 זיהוי פרחי ארץ ישראל 🌿</h1>
+        <p className="instructions">זהו את הפרח או הצמח הארצישראלי בתמונה!</p>
         <div className="score-display">
           נכון: {score} | סיבוב: {currentQuestion + 1}
         </div>

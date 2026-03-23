@@ -84,10 +84,10 @@ function Home({ onStartGame, progress }) {
     },
     {
       id: 'flower-quiz',
-      title: 'זיהוי פרחים',
-      subtitle: 'Flower Quiz',
+      title: 'זיהוי פרחי ארץ ישראל',
+      subtitle: 'Israel Flowers Quiz',
       emoji: '🌸',
-      description: 'זהו פרחים מתמונות!',
+      description: 'זהו פרחים וצמחים ארצישראליים!',
       color: '#2d8a4e'
     }
   ];
