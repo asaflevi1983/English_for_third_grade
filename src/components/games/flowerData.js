@@ -30,12 +30,6 @@ export const FLOWER_QUESTIONS = [
     answer: 0,
   },
   {
-    question: 'מה שם העץ בתמונה?',
-    image: '/images/flowers/olive-tree.jpg',
-    options: ['אורן', 'עץ זית', 'אקליפטוס'],
-    answer: 1,
-  },
-  {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/iris.jpg',
     options: ['לבנדר', 'אירוס', 'סיגלית'],
@@ -46,12 +40,6 @@ export const FLOWER_QUESTIONS = [
     image: '/images/flowers/tulip.jpg',
     options: ['נרקיס', 'חמנייה', 'צבעוני'],
     answer: 2,
-  },
-  {
-    question: 'מה שם העץ בתמונה?',
-    image: '/images/flowers/carob-tree.jpg',
-    options: ['עץ חרוב', 'עץ תאנה', 'עץ רימון'],
-    answer: 0,
   },
   {
     question: 'מה שם הפרח בתמונה?',
@@ -66,21 +54,9 @@ export const FLOWER_QUESTIONS = [
     answer: 0,
   },
   {
-    question: 'מה שם העץ בתמונה?',
-    image: '/images/flowers/pine-tree.jpg',
-    options: ['אקליפטוס', 'ברוש', 'אורן'],
-    answer: 2,
-  },
-  {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/poppy.jpg',
     options: ['כלנית', 'פרג', 'ורד'],
-    answer: 1,
-  },
-  {
-    question: 'מה שם העץ בתמונה?',
-    image: '/images/flowers/fig-tree.jpg',
-    options: ['עץ זית', 'עץ תאנה', 'עץ חרוב'],
     answer: 1,
   },
   {

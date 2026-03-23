@@ -84,10 +84,10 @@ function Home({ onStartGame, progress }) {
     },
     {
       id: 'flower-quiz',
-      title: 'זיהוי פרחים ועצים',
-      subtitle: 'Flower & Tree Quiz',
+      title: 'זיהוי פרחים',
+      subtitle: 'Flower Quiz',
       emoji: '🌸',
-      description: 'זהו פרחים ועצים מתמונות!',
+      description: 'זהו פרחים מתמונות!',
       color: '#2d8a4e'
     }
   ];
