@@ -111,7 +111,7 @@ function FlowerQuiz({ onComplete, onBack }) {
         <div className="flower-image-container">
           {!imageLoaded && <div className="image-loading">🌿 טוען תמונה...</div>}
           <img
-            src={question.image}
+            src={`${import.meta.env.BASE_URL}${question.image.replace(/^\//, '')}`}
             alt="פרח או עץ לזיהוי"
             className={`flower-image ${imageLoaded ? 'loaded' : ''}`}
             onLoad={() => setImageLoaded(true)}
