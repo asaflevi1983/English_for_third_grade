@@ -2,7 +2,7 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הצמח בתמונה?',
     image: '/images/flowers/kida.jpg',
-    options: ['סביון אביבי', 'קידה שעירה', 'תורמוס'],
+    options: ['סביון אביבי', 'קידה שעירה', 'תורמוס ההרים'],
     answer: 1,
   },
   {
@@ -14,13 +14,13 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/havatzelet.jpg',
-    options: ['שושן צחור', 'נרקיס', 'חבצלת החוף'],
+    options: ['שושן צחור', 'נרקיס מצוי', 'חבצלת החוף'],
     answer: 2,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/savyon.jpg',
-    options: ['סביון אביבי', 'קחוון ארצישראלי', 'צהרון'],
+    options: ['סביון אביבי', 'קחוון ארצישראלי', 'צהרון מצוי'],
     answer: 0,
   },
   {
@@ -38,7 +38,7 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/sakhlav.jpg',
-    options: ['יקינטון', 'תורמוס', 'סחלב אנטולי'],
+    options: ['יקינטון מזרחי', 'תורמוס ההרים', 'סחלב אנטולי'],
     answer: 2,
   },
   {
@@ -68,19 +68,19 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/iris.jpg',
-    options: ['סחלב אנטולי', 'אירוס הארגמן', 'תורמוס'],
+    options: ['סחלב אנטולי', 'אירוס הארגמן', 'תורמוס ההרים'],
     answer: 1,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/ben-hatzav.jpg',
-    options: ['יקינטון', 'בן חצב יקינטוני', 'תורמוס'],
+    options: ['יקינטון מזרחי', 'בן חצב יקינטוני', 'חצב מצוי'],
     answer: 1,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/yakinton.jpg',
-    options: ['יקינטון', 'בן חצב יקינטוני', 'אירוס הארגמן'],
+    options: ['יקינטון מזרחי', 'בן חצב יקינטוני', 'אירוס הארגמן'],
     answer: 0,
   },
   {
@@ -92,19 +92,19 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/lua-ari.jpg',
-    options: ['לוע ארי גדול', 'קידה שעירה', 'סביון אביבי'],
+    options: ['לוע ארי גדול', 'קידה שעירה', 'צהרון מצוי'],
     answer: 0,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/narkis.jpg',
-    options: ['חבצלת החוף', 'שושן צחור', 'נרקיס'],
+    options: ['חבצלת החוף', 'שושן צחור', 'נרקיס מצוי'],
     answer: 2,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/tzaharon.jpg',
-    options: ['צהרון', 'סביון אביבי', 'קידה שעירה'],
+    options: ['צהרון מצוי', 'סביון אביבי', 'קידה שעירה'],
     answer: 0,
   },
   {
@@ -122,13 +122,19 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/turmus.jpg',
-    options: ['יקינטון', 'תורמוס', 'אירוס הארגמן'],
+    options: ['יקינטון מזרחי', 'תורמוס ההרים', 'אירוס הארגמן'],
     answer: 1,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/shoshan.jpg',
-    options: ['שושן צחור', 'חבצלת החוף', 'נרקיס'],
+    options: ['שושן צחור', 'חבצלת החוף', 'נרקיס מצוי'],
     answer: 0,
+  },
+  {
+    question: 'מה שם הצמח בתמונה?',
+    image: '/images/flowers/hatzav.jpg',
+    options: ['בן חצב יקינטוני', 'חצב מצוי', 'הרדוף הנחלים'],
+    answer: 1,
   },
 ];
