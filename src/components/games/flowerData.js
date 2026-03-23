@@ -14,7 +14,7 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/havatzelet.jpg',
-    options: ['סביון אביבי', 'קידה שעירה', 'חבצלת החוף'],
+    options: ['סביון אביבי', 'נורית אסיה', 'חבצלת החוף'],
     answer: 2,
   },
   {
@@ -40,5 +40,23 @@ export const FLOWER_QUESTIONS = [
     image: '/images/flowers/sakhlav.jpg',
     options: ['הרדוף הנחלים', 'חבצלת החוף', 'סחלב אנטולי'],
     answer: 2,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/pereg.jpg',
+    options: ['כלנית', 'פרג אגסני', 'נורית אסיה'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/nurit.jpg',
+    options: ['פרג אגסני', 'כלנית', 'נורית אסיה'],
+    answer: 2,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/kalanit.jpg',
+    options: ['כלנית', 'נורית אסיה', 'צבעוני ההרים'],
+    answer: 0,
   },
 ];
