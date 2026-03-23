@@ -2,25 +2,25 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הצמח בתמונה?',
     image: '/images/flowers/kida.jpg',
-    options: ['סביון אביבי', 'קידה שעירה', 'חבצלת החוף'],
+    options: ['סביון אביבי', 'קידה שעירה', 'תורמוס'],
     answer: 1,
   },
   {
     question: 'מה שם הצמח בתמונה?',
     image: '/images/flowers/harduf.jpg',
-    options: ['הרדוף הנחלים', 'סחלב אנטולי', 'קחוון ארצישראלי'],
+    options: ['הרדוף הנחלים', 'סחלב אנטולי', 'כרמלית נאה'],
     answer: 0,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/havatzelet.jpg',
-    options: ['סביון אביבי', 'נורית אסיה', 'חבצלת החוף'],
+    options: ['שושן צחור', 'נרקיס', 'חבצלת החוף'],
     answer: 2,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/savyon.jpg',
-    options: ['סביון אביבי', 'קחוון ארצישראלי', 'קידה שעירה'],
+    options: ['סביון אביבי', 'קחוון ארצישראלי', 'צהרון'],
     answer: 0,
   },
   {
@@ -32,13 +32,13 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/tzivoni.jpg',
-    options: ['נורית אסיה', 'צבעוני ההרים', 'פרג אגסני'],
+    options: ['נורית אסיה', 'צבעוני ההרים', 'כלנית'],
     answer: 1,
   },
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/sakhlav.jpg',
-    options: ['הרדוף הנחלים', 'חבצלת החוף', 'סחלב אנטולי'],
+    options: ['יקינטון', 'תורמוס', 'סחלב אנטולי'],
     answer: 2,
   },
   {
@@ -56,7 +56,79 @@ export const FLOWER_QUESTIONS = [
   {
     question: 'מה שם הפרח בתמונה?',
     image: '/images/flowers/kalanit.jpg',
-    options: ['כלנית', 'נורית אסיה', 'צבעוני ההרים'],
+    options: ['כלנית', 'נורית אסיה', 'אדמונית החורש'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/admonit.jpg',
+    options: ['נורית אסיה', 'אדמונית החורש', 'רקפת'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/iris.jpg',
+    options: ['סחלב אנטולי', 'אירוס הארגמן', 'תורמוס'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/ben-hatzav.jpg',
+    options: ['יקינטון', 'בן חצב יקינטוני', 'תורמוס'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/yakinton.jpg',
+    options: ['יקינטון', 'בן חצב יקינטוני', 'אירוס הארגמן'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/karmelit.jpg',
+    options: ['רקפת', 'כרמלית נאה', 'סחלב אנטולי'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/lua-ari.jpg',
+    options: ['לוע ארי גדול', 'קידה שעירה', 'סביון אביבי'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/narkis.jpg',
+    options: ['חבצלת החוף', 'שושן צחור', 'נרקיס'],
+    answer: 2,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/tzaharon.jpg',
+    options: ['צהרון', 'סביון אביבי', 'קידה שעירה'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם הצמח בתמונה?',
+    image: '/images/flowers/kotzitz.jpg',
+    options: ['קידה שעירה', 'קוציץ סורי', 'לוע ארי גדול'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/rakefet.jpg',
+    options: ['אדמונית החורש', 'כרמלית נאה', 'רקפת'],
+    answer: 2,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/turmus.jpg',
+    options: ['יקינטון', 'תורמוס', 'אירוס הארגמן'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: '/images/flowers/shoshan.jpg',
+    options: ['שושן צחור', 'חבצלת החוף', 'נרקיס'],
     answer: 0,
   },
 ];
