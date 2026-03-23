@@ -1,0 +1,58 @@
+.flower-quiz {
+  --quiz-primary: #2d8a4e;
+  --quiz-secondary: #7ed56f;
+  --quiz-background: linear-gradient(135deg, #2d8a4e 0%, #f5f7e1 50%, #7ed56f 100%);
+  background: var(--quiz-background);
+}
+
+.flower-question-card {
+  max-width: 750px !important;
+}
+
+.flower-image-container {
+  margin: 20px auto;
+  max-width: 400px;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #f0f0f0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.flower-image {
+  max-width: 100%;
+  max-height: 300px;
+  border-radius: 20px;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.flower-image.loaded {
+  opacity: 1;
+}
+
+.image-loading {
+  font-size: 1.5rem;
+  color: #999;
+  animation: pulse-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-loading {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .flower-image-container {
+    max-width: 300px;
+    min-height: 180px;
+  }
+
+  .flower-image {
+    max-height: 220px;
+  }
+}

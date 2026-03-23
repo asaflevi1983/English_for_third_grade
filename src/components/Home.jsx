@@ -81,6 +81,14 @@ function Home({ onStartGame, progress }) {
       emoji: '🌍',
       description: 'חידון ידע עולמי חדש עם שאלות חכמות ומגוונות!',
       color: '#1d6f42'
+    },
+    {
+      id: 'flower-quiz',
+      title: 'זיהוי פרחים ועצים',
+      subtitle: 'Flower & Tree Quiz',
+      emoji: '🌸',
+      description: 'זהו פרחים ועצים מתמונות!',
+      color: '#2d8a4e'
     }
   ];
 

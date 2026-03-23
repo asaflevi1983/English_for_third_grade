@@ -11,6 +11,7 @@ import WeeklyDictation from './components/games/WeeklyDictation';
 import AddThreeNumbers from './components/games/AddThreeNumbers';
 import IsraelQuiz from './components/games/IsraelQuiz';
 import WorldQuiz from './components/games/WorldQuiz';
+import FlowerQuiz from './components/games/FlowerQuiz';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -128,6 +129,13 @@ function App() {
           addStars(score);
           addBadge('אזרח העולם');
           completeGame('world-quiz', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'flower-quiz':
+        return <FlowerQuiz onComplete={(score) => {
+          addStars(score);
+          addBadge('מומחה טבע');
+          completeGame('flower-quiz', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:

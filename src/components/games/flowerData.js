@@ -1,0 +1,92 @@
+export const FLOWER_QUESTIONS = [
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Sunflower_from_Silesia2.jpg/800px-Sunflower_from_Silesia2.jpg',
+    options: ['חמנייה', 'רקפת', 'כלנית'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Anemone_coronaria_-_Terre_dei_Messapi.jpg/800px-Anemone_coronaria_-_Terre_dei_Messapi.jpg',
+    options: ['נרקיס', 'כלנית', 'חמנייה'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Cyclamen_persicum_white.jpg/800px-Cyclamen_persicum_white.jpg',
+    options: ['רקפת', 'ורד', 'סחלב'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Dahlia_x_hybrida.jpg/800px-Dahlia_x_hybrida.jpg',
+    options: ['חרצית', 'דליה', 'פרג'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Red_rose_00090.jpg/800px-Red_rose_00090.jpg',
+    options: ['ורד', 'כלנית', 'צבעוני'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם העץ בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Olive_tree_in_Karystos%2C_Greece.jpg/800px-Olive_tree_in_Karystos%2C_Greece.jpg',
+    options: ['אורן', 'עץ זית', 'אקליפטוס'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Iris_germanica_%28Purple_bearded_iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg/800px-Iris_germanica_%28Purple_bearded_iris%29%2C_Wakehurst_Place%2C_UK_-_Diliff.jpg',
+    options: ['לבנדר', 'אירוס', 'סיגלית'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Tulip_-_floriade_canberra.jpg/800px-Tulip_-_floriade_canberra.jpg',
+    options: ['נרקיס', 'חמנייה', 'צבעוני'],
+    answer: 2,
+  },
+  {
+    question: 'מה שם העץ בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Ceratonia_siliqua_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-180.jpg/800px-Ceratonia_siliqua_-_K%C3%B6hler%E2%80%93s_Medizinal-Pflanzen-180.jpg',
+    options: ['עץ חרוב', 'עץ תאנה', 'עץ רימון'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Lavandula_angustifolia_-_0004.jpg/800px-Lavandula_angustifolia_-_0004.jpg',
+    options: ['אירוס', 'סיגלית', 'לבנדר'],
+    answer: 2,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Narcissus_poeticus_-_brin.jpg/800px-Narcissus_poeticus_-_brin.jpg',
+    options: ['נרקיס', 'חמנייה', 'צבעוני'],
+    answer: 0,
+  },
+  {
+    question: 'מה שם העץ בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Pinus_halepensis_tree.jpg/800px-Pinus_halepensis_tree.jpg',
+    options: ['אקליפטוס', 'ברוש', 'אורן'],
+    answer: 2,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Papaver_rhoeas_-_Köln-Kalk.jpg/800px-Papaver_rhoeas_-_Köln-Kalk.jpg',
+    options: ['כלנית', 'פרג', 'ורד'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם העץ בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Ficus_carica_-_fig_tree_-_Feigenbaum.jpg/800px-Ficus_carica_-_fig_tree_-_Feigenbaum.jpg',
+    options: ['עץ זית', 'עץ תאנה', 'עץ חרוב'],
+    answer: 1,
+  },
+  {
+    question: 'מה שם הפרח בתמונה?',
+    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Chrysanthemum_August_2011.jpg/800px-Chrysanthemum_August_2011.jpg',
+    options: ['דליה', 'חרצית', 'רקפת'],
+    answer: 1,
+  },
+];
