@@ -31,19 +31,20 @@ const OPERATOR_EQUALS = { type: 'equals', segments: [0,1] }; // top-bar, bottom-
 // Puzzles: each has initial equation chars, target equation chars, and moves needed
 // Format: { display: [char, ...], answer: [char, ...], moves: N }
 // Each char is a digit (0-9) or operator (+, -, =)
+// All puzzles verified: exactly 1 matchstick move (remove 1 segment, place on another) fixes the equation.
 const PUZZLES = [
-  { display: ['6','+','4','=','4'], answer: ['5','+','4','=','9'], moves: 1, hint: 'שנו ספרה אחת' },
-  { display: ['8','-','6','=','1'], answer: ['8','-','7','=','1'], moves: 1, hint: 'תקנו את הספרה האמצעית' },
-  { display: ['6','+','1','=','0'], answer: ['6','+','1','=','7'], moves: 1, hint: 'הפכו 0 למספר אחר' },
-  { display: ['3','+','5','=','1'], answer: ['3','+','5','=','8'], moves: 1, hint: 'הוסיפו גפרור ל-1' },
-  { display: ['9','-','1','=','3'], answer: ['9','-','1','=','8'], moves: 1, hint: 'שנו את התוצאה' },
-  { display: ['5','+','5','=','0'], answer: ['5','+','5','=','0'], answer2: ['9','+','1','=','0'], moves: 1, hint: 'הפכו 5 ל-9' },
-  { display: ['0','+','1','=','7'], answer: ['0','+','7','=','7'], moves: 1, hint: 'הפכו 1 ל-7' },
-  { display: ['1','+','1','=','9'], answer: ['7','+','1','=','8'], moves: 2, hint: 'שנו שתי ספרות' },
-  { display: ['3','-','3','=','3'], answer: ['9','-','3','=','6'], moves: 2, hint: 'שנו שתי ספרות' },
-  { display: ['5','+','3','=','6'], answer: ['5','+','1','=','6'], moves: 1, hint: 'שנו ספרה אחת' },
-  { display: ['9','+','5','=','6'], answer: ['9','-','5','=','4'], moves: 1, hint: 'שנו סימן ותוצאה' },
-  { display: ['8','+','3','=','0'], answer: ['8','-','3','=','5'], moves: 2, hint: 'שנו את הפעולה והתוצאה' },
+  { display: ['0','+','1','=','7'], answer: ['6','+','1','=','7'], moves: 1, hint: 'הוסיפו גפרור ל-0' },
+  { display: ['6','+','3','=','6'], answer: ['5','+','3','=','8'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['2','+','1','=','8'], answer: ['2','+','7','=','9'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['1','+','8','=','1'], answer: ['1','+','6','=','7'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['8','-','6','=','1'], answer: ['9','-','8','=','1'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['9','-','7','=','6'], answer: ['9','-','1','=','8'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['5','-','1','=','6'], answer: ['6','-','1','=','5'], moves: 1, hint: 'הזיזו גפרור בין שתי ספרות' },
+  { display: ['8','-','2','=','1'], answer: ['9','-','2','=','7'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['9','-','9','=','5'], answer: ['9','-','3','=','6'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['8','+','3','=','9'], answer: ['0','+','9','=','9'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['5','-','0','=','8'], answer: ['6','-','0','=','6'], moves: 1, hint: 'שנו שתי ספרות' },
+  { display: ['9','-','8','=','5'], answer: ['9','-','0','=','9'], moves: 1, hint: 'שנו שתי ספרות' },
 ];
 
 function segmentsToDigit(segs) {
