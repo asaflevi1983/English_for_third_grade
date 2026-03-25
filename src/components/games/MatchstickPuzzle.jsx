@@ -339,7 +339,7 @@ function MatchstickPuzzle({ onComplete, onBack }) {
       {showHint && (
         <div className="matchstick-hint">
           <p>{puzzle.hint}</p>
-          <p className="hint-target">תשובה: {puzzle.answer.join(' ')}</p>
+          <p className="hint-target">תשובה: <span dir="ltr" style={{unicodeBidi: 'bidi-override'}}>{puzzle.answer.join(' ')}</span></p>
         </div>
       )}
     </div>
