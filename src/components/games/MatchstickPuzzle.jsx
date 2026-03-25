@@ -288,7 +288,7 @@ function MatchstickPuzzle({ onComplete, onBack }) {
         </div>
       )}
 
-      <div className="equation-container" dir="ltr" style={{direction: 'ltr', unicodeBidi: 'bidi-override'}}>
+      <div className="equation-container" dir="ltr" style={{direction: 'ltr', unicodeBidi: 'bidi-override'}} key={puzzleIndex}>
         {puzzle.display.map((ch, charIdx) => {
           if (ch === '=') {
             return (
