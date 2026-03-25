@@ -89,6 +89,14 @@ function Home({ onStartGame, progress }) {
       emoji: '🌸',
       description: 'זהו פרחים וצמחים ארצישראליים!',
       color: '#2d8a4e'
+    },
+    {
+      id: 'matchstick-puzzle',
+      title: 'חידון גפרורים',
+      subtitle: 'Matchstick Puzzle',
+      emoji: '🔥',
+      description: 'הזיזו גפרורים כדי לתקן את התרגיל!',
+      color: '#ff9a3c'
     }
   ];
 
