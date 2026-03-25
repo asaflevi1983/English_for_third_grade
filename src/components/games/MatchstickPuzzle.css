@@ -108,6 +108,7 @@
   gap: 16px;
   margin: 30px auto;
   flex-wrap: wrap;
+  direction: ltr;
 }
 
 /* 7-Segment Digit Display */
