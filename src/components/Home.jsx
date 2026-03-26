@@ -97,6 +97,14 @@ function Home({ onStartGame, progress }) {
       emoji: '🔥',
       description: 'הזיזו גפרורים כדי לתקן את התרגיל!',
       color: '#ff9a3c'
+    },
+    {
+      id: 'flag-quiz',
+      title: 'חידון דגלים',
+      subtitle: 'Flag Quiz',
+      emoji: '🏳️',
+      description: 'זהו דגלים של מדינות מכל העולם!',
+      color: '#e74c3c'
     }
   ];
 

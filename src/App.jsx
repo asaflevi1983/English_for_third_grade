@@ -13,6 +13,7 @@ import IsraelQuiz from './components/games/IsraelQuiz';
 import WorldQuiz from './components/games/WorldQuiz';
 import FlowerQuiz from './components/games/FlowerQuiz';
 import MatchstickPuzzle from './components/games/MatchstickPuzzle';
+import FlagQuiz from './components/games/FlagQuiz';
 import ProgressTracker from './components/ProgressTracker';
 
 function App() {
@@ -144,6 +145,13 @@ function App() {
           addStars(score);
           addBadge('גאון הגפרורים');
           completeGame('matchstick-puzzle', score);
+          setCurrentScreen('home');
+        }} onBack={() => setCurrentScreen('home')} />;
+      case 'flag-quiz':
+        return <FlagQuiz onComplete={(score) => {
+          addStars(score);
+          addBadge('מומחה דגלים');
+          completeGame('flag-quiz', score);
           setCurrentScreen('home');
         }} onBack={() => setCurrentScreen('home')} />;
       default:
