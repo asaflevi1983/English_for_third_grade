@@ -105,6 +105,14 @@ function Home({ onStartGame, progress }) {
       emoji: '🏳️',
       description: 'זהו דגלים של מדינות מכל העולם!',
       color: '#e74c3c'
+    },
+    {
+      id: 'capital-cities',
+      title: 'חידון ערי בירה',
+      subtitle: 'Capital Cities Quiz',
+      emoji: '🏛️',
+      description: 'מה עיר הבירה של כל מדינה? בואו לבדוק!',
+      color: '#8e44ad'
     }
   ];
 
